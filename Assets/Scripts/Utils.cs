@@ -107,14 +107,17 @@ public class Utils {
 		float width = height * cam.aspect;
 		return new Vector2(width, height);
 	}
+	public static Vector2 GetCameraPos() {
+		return Camera.main.transform.position;
+	}
 
 	public static T FindTheClassInObject<T>(string obj_name) {
-		// TODO: Going to set back in level with y size of max camera position
 		GameObject go = GameObject.Find(obj_name);
-		T class_pointer = (class T)go.GetComponentInChildren(typeof(T));???
-		if (class_pointer == null)
-			Debug.LogError("Can't find " + T.ToString);
-		return class_pointer;
+		Component component = go.GetComponentInChildren(typeof(T));
+		T target_object = (T)System.Convert.ChangeType(component, typeof(T));
+		if (target_object == null)
+			Debug.LogError("Can't find " + obj_name);
+		return target_object;
 	}
 }
 

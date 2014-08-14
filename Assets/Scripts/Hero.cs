@@ -27,6 +27,7 @@ public class Hero : MonoBehaviour {
 		m_Direction = Direction.Stationary;
 		m_OldDirection = Direction.Stationary;
 		m_LevelsSceneController = levels_scene_controller;
+		gameObject.transform.localPosition = GetPosFromTrajectory(m_CurrT);
 	}
 
 	public void SetTarget(Vector3 p) {
@@ -63,8 +64,8 @@ public class Hero : MonoBehaviour {
 	}
 
 	void InitPath(float scale, Vector3 pos) {
-		Vector3 start_pos = new Vector3(4.2f, 6.05f, 0.0f);
-		Vector3 delta_y_pos = new Vector3(0.0f, 4.18f, 0.0f);
+		Vector3 start_pos = new Vector3(4.2f, 6.3f, 0.0f);
+		Vector3 delta_y_pos = new Vector3(0.0f, 4.23f, 0.0f);
 		Vector3 delta_x_pos = new Vector3(8.5f, 0.0f, 0.0f);
 
 		for (int i = 0; i < GameContr.control.m_LevelsCleared.Length * 2; i++) {
@@ -142,8 +143,9 @@ public class Hero : MonoBehaviour {
 	void CheckForTargets() {
 		if (m_NeedToStopCurrTarget)
 			return;	// do not start new task until previous is not shuted down
+		const float hero_speed = 0.05f;
 		if (m_TargetT >= 0.0f) {
-			MoveByRoute(m_TargetT, 0.2f);
+			MoveByRoute(m_TargetT, hero_speed);
 			m_TargetT = -1.0f;
 		}
 	}
@@ -209,7 +211,7 @@ public class Hero : MonoBehaviour {
 			}
 			i += Time.deltaTime * rate;
 			m_CurrT = Mathf.Lerp(start_t, end_t, i);
-			trans.localPosition = GetPosFromTrajectory(m_CurrT);;
+			trans.localPosition = GetPosFromTrajectory(m_CurrT);
 			ChooseCurrentDirection(move_forvard);
 			yield return null;
 		}

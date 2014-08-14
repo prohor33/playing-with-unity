@@ -11,7 +11,7 @@ public class LevelsSettings {
 		return m_DeltaSpawnMove[GameContr.control.m_LevelPlaying];
 	}
 
-	public string[] m_BackgroundSpriteNames = {"back1", "back2", "back3", "back4",
+	public string[] m_BackgroundSpriteNames = {"back3", "back4", "back2", "back1",
 		"background", "background", "background", "background"};
 	
 	//	private members --------------------------
