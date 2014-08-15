@@ -143,7 +143,8 @@ public class Hero : MonoBehaviour {
 	void CheckForTargets() {
 		if (m_NeedToStopCurrTarget)
 			return;	// do not start new task until previous is not shuted down
-		const float hero_speed = 0.05f;
+//		const float hero_speed = 0.05f;
+		const float hero_speed = 0.5f;	// for debug!
 		if (m_TargetT >= 0.0f) {
 			MoveByRoute(m_TargetT, hero_speed);
 			m_TargetT = -1.0f;

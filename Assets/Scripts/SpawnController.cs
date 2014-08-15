@@ -40,11 +40,30 @@ public class SpawnController {
 
 	float m_DeltaSpawnMove;	// set from lvl_settings
 	float m_SpeedDeltaSpawnMoveCoef = 1.0f;
+	float m_LeftOrRightPrivilege;	// from -1.0 to 1.0, from left to right
+	bool m_PrivilegeChangingTrand;	// true = increasing, false = decreasing
 
 	Dictionary<SpawnObjectType, SpawnObjectsInfo> m_SpawnObjects = new Dictionary<SpawnObjectType, SpawnObjectsInfo>();
 
-	public bool Spawn(float delta_spawn_move, bool is_right) {
-		if (delta_spawn_move > m_DeltaSpawnMove * m_SpeedDeltaSpawnMoveCoef) {
+	public bool Spawn(float spawn_move, bool is_right) {
+
+		float privilege = Mathf.Abs(m_LeftOrRightPrivilege);
+		privilege *= is_right == (m_LeftOrRightPrivilege > 0.0) ? 1.0f : -1.0f;
+		const float max_privilege = 10.0f;
+		privilege *= max_privilege;
+
+		Debug.Log(m_LeftOrRightPrivilege + " " + privilege + " " + m_DeltaSpawnMove);
+
+		// Should we  do this?
+		float min_delta_spawn_move = 4.0f;
+		float max_delta_spawn_move = 15.0f;
+
+		float res_delta_spawn_move = m_DeltaSpawnMove - privilege;
+		res_delta_spawn_move = Mathf.Clamp(res_delta_spawn_move,
+		                                   min_delta_spawn_move, max_delta_spawn_move);
+
+
+		if (spawn_move > res_delta_spawn_move * m_SpeedDeltaSpawnMoveCoef) {
 			
 			Vector3 pos = new Vector3(3.0f * (is_right ? 1.0f : -1.0f), 30.0f, 0.0f);
 			
@@ -72,8 +91,7 @@ public class SpawnController {
 			go.transform.localScale = new Vector3(scale, scale, 1.0f);
 
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -85,10 +103,25 @@ public class SpawnController {
 
 		m_DeltaSpawnMove = GameContr.control.lvl_settings.GetDeltaSpawnMove();
 		Debug.Log("m_DeltaSpawnMove = " + m_DeltaSpawnMove);
+		m_LeftOrRightPrivilege = 0.0f;
+		m_PrivilegeChangingTrand = true;
 	}
 
 	public void SetSpeedDeltaSpawnMoveCoef(float value) {
 		m_SpeedDeltaSpawnMoveCoef = value;
+	}
+
+	// Calling it from ObjectConveyour
+	public void FixedUpdate() {
+		float chance_of_changin_trand = 0.1f * Time.deltaTime;
+		if (Random.Range(0.0f, 1.0f) < chance_of_changin_trand)
+			m_PrivilegeChangingTrand = !m_PrivilegeChangingTrand;
+
+		const float privilege_changing_speed = 0.4f;
+		float delta_privilege = privilege_changing_speed * Time.deltaTime;
+		delta_privilege *= m_PrivilegeChangingTrand ? 1.0f : -1.0f;
+		m_LeftOrRightPrivilege += delta_privilege;
+		m_LeftOrRightPrivilege = Mathf.Clamp(m_LeftOrRightPrivilege, -1.0f, 1.0f);
 	}
 
 	SpawnObjectType GetObjectType(bool is_right) {

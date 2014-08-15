@@ -36,6 +36,7 @@ public class ObjectConveyor {
 		else
 			Move();
 		Spawn();
+		m_SpawnContr.FixedUpdate();
 	}
 
 	public void SetMinSpeed(float min_speed) {

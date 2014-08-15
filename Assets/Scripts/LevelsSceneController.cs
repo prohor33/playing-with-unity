@@ -34,8 +34,7 @@ public class LevelsSceneController : MonoBehaviour {
 		RectOffset btn_back_offset = new RectOffset((int)-Screen.width / 10, (int)Screen.width / 10, (int)-Screen.height / 40, (int)Screen.height / 40);
 		btn_back_pos = btn_back_offset.Add(btn_back_pos);
 		if(GUI.Button(btn_back_pos, "Back to menu", m_BackButtonSkin.button)) {
-			//			Application.LoadLevel(0);
-			Start();
+			Application.LoadLevel(0);
 		}
 	}
 
