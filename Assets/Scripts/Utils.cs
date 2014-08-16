@@ -111,13 +111,24 @@ public class Utils {
 		return Camera.main.transform.position;
 	}
 
-	public static T FindTheClassInObject<T>(string obj_name) {
+	public static T GetTheClassFromGO<T>(string obj_name) {
 		GameObject go = GameObject.Find(obj_name);
+		return GetTheClassFromGO<T>(go);
+	}
+	public static T GetTheClassFromGO<T>(GameObject go) {
 		Component component = go.GetComponentInChildren(typeof(T));
 		T target_object = (T)System.Convert.ChangeType(component, typeof(T));
 		if (target_object == null)
-			Debug.LogError("Can't find " + obj_name);
+			Debug.LogError("Can't find " + go.ToString());
 		return target_object;
+	}
+	
+	public static GameObject FindActiveGO(string name) {
+		GameObject go = GameObject.Find(name);
+		if (!go) {
+			Debug.LogError("Can't find " + name);
+		}
+		return go;
 	}
 }
 

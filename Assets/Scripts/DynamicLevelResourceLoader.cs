@@ -6,7 +6,7 @@ public class DynamicLevelResourceLoader : MonoBehaviour {
 	LevelController m_LevelController;
 
 	void Start() {
-		m_LevelController = Utils.FindTheClassInObject<LevelController>("LevelController");
+		m_LevelController = Utils.GetTheClassFromGO<LevelController>("LevelController");
 	}
 
 	void LoadLevelResources(int level) {

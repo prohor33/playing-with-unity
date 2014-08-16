@@ -83,7 +83,9 @@ public class Hero : MonoBehaviour {
 	void Update () {
 		for (int i = 0; i < m_Path.Count - 1; i++)
 			Debug.DrawLine (m_Path[i], m_Path[i + 1], Color.red);
+	}
 
+	void FixedUpdate() {
 		CheckForTargets();
 		CheckForLevelPassingBy();
 		UpdateDirection();
@@ -201,18 +203,18 @@ public class Hero : MonoBehaviour {
 	// IEnumerators ----------------------------------
 
 	IEnumerator MoveHero(Transform trans, float start_t, float end_t, bool move_forvard, float time) {
-		float i = 0.0f;
+		float t = 0.0f;
 		float rate = 1.0f/time;
-		while (i < 1.0f) {
+		while (t < 1.0f) {
 			if (m_NeedToStopCurrTarget) {
 				m_NeedToStopCurrTarget = false;
 				m_State = HeroState.Stationary;
 				m_Direction = Direction.Stationary;
 				yield break;
 			}
-			i += Time.deltaTime * rate;
-			m_CurrT = Mathf.Lerp(start_t, end_t, i);
-			trans.localPosition = GetPosFromTrajectory(m_CurrT);
+			t += Time.deltaTime * rate;
+			m_CurrT = Mathf.Lerp(start_t, end_t, t);
+			trans.position = GetPosFromTrajectory(m_CurrT);
 			ChooseCurrentDirection(move_forvard);
 			yield return null;
 		}
