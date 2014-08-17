@@ -61,7 +61,8 @@ public class KingSceneController : MonoBehaviour {
 	void StartMovingHero(bool to_the_king = true) {
 		Vector3 target_p = to_the_king ? m_KingTargetP : m_ExitTargetP;
 
-		const float speed = 4.0f;
+//		const float speed = 4.0f;
+		const float speed = 40.0f;	// for debug!
 		float time = (target_p - m_Hero.transform.position).magnitude / speed;
 		StartCoroutine(MoveHero(m_Hero.transform, m_Hero.transform.position, target_p, time));
 	}
@@ -74,7 +75,7 @@ public class KingSceneController : MonoBehaviour {
 	}
 
 	void StartTalking() {
-		//	TODO: to implement
+		CharactersTalkingDialog.Instantiate(m_King.transform.position);
 	}
 
 	void GoToLevels() {
