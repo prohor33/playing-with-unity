@@ -75,7 +75,9 @@ public class KingSceneController : MonoBehaviour {
 	}
 
 	void StartTalking() {
-		CharactersTalkingDialog.Instantiate(m_King.transform.position);
+		CharactersTalkingDialog ctd = CharactersTalkingDialog.Instantiate(m_King.transform.position);
+//		ctd.m_DialogString = "Hey! Glad to see you!\n How are you? Are you ok?";
+		ctd.StartDialog();
 	}
 
 	void GoToLevels() {

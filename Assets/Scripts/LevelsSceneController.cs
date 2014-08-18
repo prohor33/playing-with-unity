@@ -19,7 +19,6 @@ public class LevelsSceneController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start() {
-		
 		LoadDungeonBackground();
 		LoadLevelsDoors();
 		InitHero();
