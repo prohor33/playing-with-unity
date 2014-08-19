@@ -75,8 +75,28 @@ public class KingSceneController : MonoBehaviour {
 	}
 
 	void StartTalking() {
-		CharactersTalkingDialog ctd = CharactersTalkingDialog.Instantiate(m_King.transform.position);
-//		ctd.m_DialogString = "Hey! Glad to see you!\n How are you? Are you ok?";
+		Invoke("HeroTalk", 0);
+		Invoke("KingTalk", 5);
+//		ctd.m_DialogString = "I'm glad to see you!\n I'm waiting for you so long";
+
+	}
+
+	void KingTalk() {
+		string str = "bye";
+		SpriteRenderer sprite_rend = Utils.GetTheClassFromGO<SpriteRenderer>(m_King);
+		Vector3 delta_dialog_p = new Vector3(sprite_rend.bounds.size.x / 4.0f, sprite_rend.bounds.size.y / 3.0f, 0.0f);
+		CharactersTalkingDialog ctd = CharactersTalkingDialog.Instantiate(m_King.transform.position + delta_dialog_p);
+		ctd.m_DialogString = str;
+		ctd.m_IsRight = false;
+		ctd.StartDialog();
+	}
+	void HeroTalk() {
+		string str = "hey";
+		SpriteRenderer sprite_rend = Utils.GetTheClassFromGO<SpriteRenderer>(m_Hero);
+		Vector3 delta_dialog_p = new Vector3(-sprite_rend.bounds.size.x / 4.0f, sprite_rend.bounds.size.y / 3.0f, 0.0f);
+		CharactersTalkingDialog ctd = CharactersTalkingDialog.Instantiate(m_King.transform.position + delta_dialog_p);
+		ctd.m_DialogString = str;
+		ctd.m_IsRight = true;
 		ctd.StartDialog();
 	}
 
