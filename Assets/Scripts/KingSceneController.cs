@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class KingSceneController : MonoBehaviour {
 
@@ -15,6 +16,24 @@ public class KingSceneController : MonoBehaviour {
 
 	enum Task { GoToKing = 0, Talk, GoOut };
 	Task m_CurrentTask;
+
+	public class Replica {
+
+		public Replica(Person person, string phrase) {
+			m_Author = person;
+			m_Phrase = phrase;
+		}
+
+		public enum Person { King = 0, Hero };
+		public Person m_Author;
+		public string m_Phrase;
+
+		public override string ToString()
+		{
+			return m_Author + ": " + m_Phrase;
+		}
+	};
+	List<Replica> m_TalkingDialog = new List<Replica>();
 
 	void Start() {
 		m_Hero = Utils.FindActiveGO("Hero");
@@ -43,7 +62,17 @@ public class KingSceneController : MonoBehaviour {
 		const float scale_hero = 1.9f;
 		Utils.ScaleSpriteInGO(m_Hero, scale_hero);
 
+		InitTalkingDialog();
+
 		StartMovingHero();
+	}
+
+	void InitTalkingDialog() {
+		m_TalkingDialog.Add(new Replica(Replica.Person.King, "Hi!"));
+		m_TalkingDialog.Add(new Replica(Replica.Person.Hero, "Hello!"));
+		m_TalkingDialog.Add(new Replica(Replica.Person.King, "How are you?"));
+		m_TalkingDialog.Add(new Replica(Replica.Person.Hero, "I'm fine, thanks"));
+		m_TalkingDialog.Add(new Replica(Replica.Person.Hero, "You?"));
 	}
 
 	void UpdateHeroDirection() {
@@ -75,8 +104,14 @@ public class KingSceneController : MonoBehaviour {
 	}
 
 	void StartTalking() {
-		Invoke("HeroTalk", 0);
-		Invoke("KingTalk", 5);
+
+		int seconds = 0;
+		for (int i = 0; i < m_TalkingDialog.Count; i++) {
+			Invoke(m_TalkingDialog[i].m_Author.ToString + "Talk", seconds += 5);
+		}
+
+//		Invoke("HeroTalk", 0);
+//		Invoke("KingTalk", 5);
 //		ctd.m_DialogString = "I'm glad to see you!\n I'm waiting for you so long";
 
 	}
