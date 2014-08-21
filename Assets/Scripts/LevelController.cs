@@ -66,7 +66,7 @@ public class LevelController : MonoBehaviour {
 		                         menu_btn_pos.y, menu_btn_size.x, menu_btn_size.y);
 
 		if(GUI.Button(menu_btn_rect, "Menu")) {
-			Application.LoadLevel(0);
+			Application.LoadLevel(Utils.menu_level);
 		}
 
 		Rect re_btn_rect = new Rect(menu_btn_shift,

@@ -33,7 +33,7 @@ public class LevelsSceneController : MonoBehaviour {
 		RectOffset btn_back_offset = new RectOffset((int)-Screen.width / 10, (int)Screen.width / 10, (int)-Screen.height / 40, (int)Screen.height / 40);
 		btn_back_pos = btn_back_offset.Add(btn_back_pos);
 		if(GUI.Button(btn_back_pos, "Back to menu", m_BackButtonSkin.button)) {
-			Application.LoadLevel(0);
+			Application.LoadLevel(Utils.menu_level);
 		}
 	}
 
@@ -114,8 +114,11 @@ public class LevelsSceneController : MonoBehaviour {
 		int indent_y = (int)(Screen.height / 7.0f);	// special indent for bar on the top
 //		int indent_y = 0;
 
-		float pos_y = Camera.main.transform.position.y + Camera.main.orthographicSize - sr.bounds.size.y / 2.0f
-			+ indent_to_actual_image_y * image_pixels_to_unit - Utils.ScreenPixelsToUnit(indent_y);
+		bool align_top = true;
+		float shift_y = Camera.main.orthographicSize - sr.bounds.size.y / 2.0f
+			+ indent_to_actual_image_y * image_pixels_to_unit;
+		shift_y *= align_top ? 1.0f : -1.0f;
+		float pos_y = Camera.main.transform.position.y + shift_y - Utils.ScreenPixelsToUnit(indent_y);
 		go.transform.position = new Vector3(0.0f, pos_y, 0.0f);
 
 		m_Dungeon = go;

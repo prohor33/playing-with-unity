@@ -17,6 +17,9 @@ public class KingSceneController : MonoBehaviour {
 	enum Task { GoToKing = 0, Talk, GoOut };
 	Task m_CurrentTask;
 
+//	const float m_ReplicaTimeLength = 4;
+	const float m_ReplicaTimeLength = 0.2f;	// for debug
+
 	public class Replica {
 
 		public Replica(Person person, string phrase) {
@@ -34,6 +37,7 @@ public class KingSceneController : MonoBehaviour {
 		}
 	};
 	List<Replica> m_TalkingDialog = new List<Replica>();
+	int m_CurrentReplicaNumber;
 
 	void Start() {
 		m_Hero = Utils.FindActiveGO("Hero");
@@ -62,6 +66,7 @@ public class KingSceneController : MonoBehaviour {
 		const float scale_hero = 1.9f;
 		Utils.ScaleSpriteInGO(m_Hero, scale_hero);
 
+		LoadKingSceneBackground();
 		InitTalkingDialog();
 
 		StartMovingHero();
@@ -104,39 +109,72 @@ public class KingSceneController : MonoBehaviour {
 	}
 
 	void StartTalking() {
+		m_CurrentTask = Task.Talk;
+		m_CurrentReplicaNumber = 0;
 
-		int seconds = 0;
+		float seconds = 1.0f;
 		for (int i = 0; i < m_TalkingDialog.Count; i++) {
-			Invoke(m_TalkingDialog[i].m_Author.ToString + "Talk", seconds += 5);
+			Invoke(m_TalkingDialog[i].m_Author.ToString() + "Talk", seconds);
+
+			seconds += m_ReplicaTimeLength;
 		}
-
-//		Invoke("HeroTalk", 0);
-//		Invoke("KingTalk", 5);
-//		ctd.m_DialogString = "I'm glad to see you!\n I'm waiting for you so long";
-
+		Invoke("GoOut", seconds);
 	}
 
 	void KingTalk() {
-		string str = "bye";
+		string str = m_TalkingDialog[m_CurrentReplicaNumber].m_Phrase;
 		SpriteRenderer sprite_rend = Utils.GetTheClassFromGO<SpriteRenderer>(m_King);
 		Vector3 delta_dialog_p = new Vector3(sprite_rend.bounds.size.x / 4.0f, sprite_rend.bounds.size.y / 3.0f, 0.0f);
 		CharactersTalkingDialog ctd = CharactersTalkingDialog.Instantiate(m_King.transform.position + delta_dialog_p);
 		ctd.m_DialogString = str;
 		ctd.m_IsRight = false;
+		ctd.m_ShowTime = m_ReplicaTimeLength;
 		ctd.StartDialog();
+		m_CurrentReplicaNumber++;
 	}
 	void HeroTalk() {
-		string str = "hey";
+		string str = m_TalkingDialog[m_CurrentReplicaNumber].m_Phrase;
 		SpriteRenderer sprite_rend = Utils.GetTheClassFromGO<SpriteRenderer>(m_Hero);
 		Vector3 delta_dialog_p = new Vector3(-sprite_rend.bounds.size.x / 4.0f, sprite_rend.bounds.size.y / 3.0f, 0.0f);
 		CharactersTalkingDialog ctd = CharactersTalkingDialog.Instantiate(m_King.transform.position + delta_dialog_p);
 		ctd.m_DialogString = str;
 		ctd.m_IsRight = true;
+		ctd.m_ShowTime = m_ReplicaTimeLength;
 		ctd.StartDialog();
+		m_CurrentReplicaNumber++;
+	}
+
+	void GoOut() {
+		m_CurrentTask = Task.GoOut;
+		StartMovingHero(false);
+//		const float go_out_time = 5.0f;
+		const float go_out_time = 1.0f; // for debug
+		Invoke("GoToLevels", go_out_time);
 	}
 
 	void GoToLevels() {
-		//	TODO: to implement
+		Application.LoadLevel(Utils.level_select_level);
+	}
+
+	void LoadKingSceneBackground() {
+		int indent_to_actual_image_x = 5;
+		int indent_to_actual_image_y = 105;
+		GameObject go = Utils.LoadSpriteIntoGO("king_scene_back", "Background");
+		Utils.AttachSriteToCameraInGO(go, KeyCode.X, 1.0f, indent_to_actual_image_x);
+		
+		SpriteRenderer sr = (SpriteRenderer)go.GetComponent(typeof(SpriteRenderer));
+		Sprite sprite = sr.sprite;
+		float image_pixels_to_unit = sr.bounds.size.y / sprite.textureRect.height;
+		
+//		int indent_y = (int)(Screen.height / 7.0f);	// special indent for bar on the top
+		int indent_y = 0;
+
+		bool align_top = false;
+		float shift_y = Camera.main.orthographicSize - sr.bounds.size.y / 2.0f
+			+ indent_to_actual_image_y * image_pixels_to_unit;
+		shift_y *= align_top ? 1.0f : -1.0f;
+		float pos_y = Camera.main.transform.position.y + shift_y - Utils.ScreenPixelsToUnit(indent_y);
+		go.transform.position = new Vector3(0.0f, pos_y, 0.0f);
 	}
 
 	// IEnumerators ----------------------------------

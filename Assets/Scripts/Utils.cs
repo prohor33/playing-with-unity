@@ -3,6 +3,11 @@ using System.Collections;
 
 public class Utils {
 
+	public static int menu_level = 0;
+	public static int king_level = 1;
+	public static int level_select_level = 2;
+	public static int monster_level = 3;
+
 	// TODO: to delete?
 	public static float X320ToAnyRes(float x) {
 		return x / 320.0f * Screen.width;

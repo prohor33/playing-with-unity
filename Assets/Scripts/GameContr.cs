@@ -24,7 +24,7 @@ public class GameContr : MonoBehaviour {
 //		if (m_LevelsCleared[level] == LevelState.Blocked)
 //			return false;
 		m_LevelPlaying = level;
-		Application.LoadLevel(2);	// Level scene
+		Application.LoadLevel(Utils.monster_level);	// Level scene
 		return true;
 	}
 

@@ -27,7 +27,7 @@ public class DynamicLevelResourceLoader : MonoBehaviour {
 			Debug.LogWarning("Can't load " + sprite_name);
 		sprite_rend.sprite = sprite;
 
-		// Scale sprite to fit with width
+		// Scale sprite to fit with height
 		float new_size_y = Utils.GetCameraSize().y + (LevelController.m_MaxCameraPosition - Utils.GetCameraPos().y);
 		float scale = new_size_y / sprite_rend.bounds.size.y;
 		Utils.ScaleSpriteInGO(obj, scale);
