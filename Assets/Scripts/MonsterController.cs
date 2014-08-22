@@ -6,7 +6,7 @@ public class MonsterController : MonoBehaviour {
 	public GameObject m_LeftHead;
 	public GameObject m_RightHead;
 	public GameObject m_Cake;
-	public LevelController m_LvlController;
+	public MonsterLevelController m_LvlController;
 	public float m_HeadMaxDeltaPos;
 	public float m_GrowingCoefficient;
 

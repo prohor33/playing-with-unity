@@ -36,7 +36,7 @@ class SpawnObjectsInfo {
 
 public class SpawnController {
 	
-	public LevelController m_GameContr;
+	public MonsterLevelController m_GameContr;
 
 	float m_DeltaSpawnMove;	// set from lvl_settings
 	float m_SpeedDeltaSpawnMoveCoef = 1.0f;
@@ -52,7 +52,7 @@ public class SpawnController {
 		const float max_privilege = 10.0f;
 		privilege *= max_privilege;
 
-		Debug.Log(m_LeftOrRightPrivilege + " " + privilege + " " + m_DeltaSpawnMove);
+//		Debug.Log(m_LeftOrRightPrivilege + " " + privilege + " " + m_DeltaSpawnMove);
 
 		// Should we  do this?
 		float min_delta_spawn_move = 4.0f;

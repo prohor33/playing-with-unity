@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelController : MonoBehaviour {
+public class MonsterLevelController : MonoBehaviour {
 	
 	public GameObject m_GameOverText;
 	public GameObject m_Monster;

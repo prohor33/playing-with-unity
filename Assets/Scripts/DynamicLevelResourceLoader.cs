@@ -3,10 +3,10 @@ using System.Collections;
 
 public class DynamicLevelResourceLoader : MonoBehaviour {
 
-	LevelController m_LevelController;
+	MonsterLevelController m_LevelController;
 
 	void Start() {
-		m_LevelController = Utils.GetTheClassFromGO<LevelController>("LevelController");
+		m_LevelController = Utils.GetTheClassFromGO<MonsterLevelController>("LevelController");
 	}
 
 	void LoadLevelResources(int level) {
@@ -28,7 +28,7 @@ public class DynamicLevelResourceLoader : MonoBehaviour {
 		sprite_rend.sprite = sprite;
 
 		// Scale sprite to fit with height
-		float new_size_y = Utils.GetCameraSize().y + (LevelController.m_MaxCameraPosition - Utils.GetCameraPos().y);
+		float new_size_y = Utils.GetCameraSize().y + (MonsterLevelController.m_MaxCameraPosition - Utils.GetCameraPos().y);
 		float scale = new_size_y / sprite_rend.bounds.size.y;
 		Utils.ScaleSpriteInGO(obj, scale);
 		

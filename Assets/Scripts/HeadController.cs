@@ -6,7 +6,7 @@ public class HeadController : MonoBehaviour {
 
 	public bool m_IsRightHead;
 	public GameObject m_Monster;
-	public LevelController m_LevelController;
+	public MonsterLevelController m_LevelController;
 	public AudioClip m_ImpactAudio;
 
 	MonsterController m_MonsterContr;

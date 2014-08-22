@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ObjectConveyor {
 		
-	public LevelController m_LevelContr;
+	public MonsterLevelController m_LevelContr;
 
 	System.Collections.Generic.List<FallingObject> m_Objects =
 		new System.Collections.Generic.List<FallingObject>();
