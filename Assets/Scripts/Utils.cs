@@ -39,6 +39,9 @@ public class Utils {
 		}
 		return sr.sprite;
 	}
+	public static Sprite GetSpriteFromGO(string go_name) {
+		return GetSpriteFromGO(GameObject.Find(go_name));
+	}
 
 	public static GameObject CreateGOWithSprite(string name) {
 		Sprite sprite = Resources.Load<Sprite>(name.ToLower());
@@ -134,6 +137,23 @@ public class Utils {
 			Debug.LogError("Can't find " + name);
 		}
 		return go;
+	}
+
+	public static void LoadBackground(string back_go_name, string sprite_name,
+	                                  Vector2 indent_to_actual_image, bool align_top,
+	                                  float sp_bar_indent_y = 0) {
+		GameObject go = Utils.LoadSpriteIntoGO(sprite_name, back_go_name);
+		Utils.AttachSriteToCameraInGO(go, KeyCode.X, 1.0f, (int)indent_to_actual_image.x);
+		
+		SpriteRenderer sr = (SpriteRenderer)go.GetComponent(typeof(SpriteRenderer));
+		Sprite sprite = sr.sprite;
+		float image_pixels_to_unit = sr.bounds.size.y / sprite.textureRect.height;
+
+		float shift_y = Camera.main.orthographicSize - sr.bounds.size.y / 2.0f
+			+ indent_to_actual_image.y * image_pixels_to_unit;
+		shift_y *= align_top ? 1.0f : -1.0f;
+		float pos_y = Camera.main.transform.position.y + shift_y - Utils.ScreenPixelsToUnit(sp_bar_indent_y);
+		go.transform.position = new Vector3(0.0f, pos_y, 0.0f);
 	}
 }
 

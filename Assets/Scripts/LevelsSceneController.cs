@@ -102,26 +102,8 @@ public class LevelsSceneController : MonoBehaviour {
 
 	void LoadDungeonBackground() {
 		string game_obj_name = "Dungeon";
-		int indent_to_actual_image_x = 242;
-		int indent_to_actual_image_y = 176;
-		GameObject go = Utils.LoadSpriteIntoGO(game_obj_name.ToLower(), game_obj_name);
-		Utils.AttachSriteToCameraInGO(go, KeyCode.X, 1.0f, indent_to_actual_image_x);
-
-		SpriteRenderer sr = (SpriteRenderer)go.GetComponent(typeof(SpriteRenderer));
-		Sprite sprite = sr.sprite;
-		float image_pixels_to_unit = sr.bounds.size.y / sprite.textureRect.height;
-
-		int indent_y = (int)(Screen.height / 7.0f);	// special indent for bar on the top
-//		int indent_y = 0;
-
-		bool align_top = true;
-		float shift_y = Camera.main.orthographicSize - sr.bounds.size.y / 2.0f
-			+ indent_to_actual_image_y * image_pixels_to_unit;
-		shift_y *= align_top ? 1.0f : -1.0f;
-		float pos_y = Camera.main.transform.position.y + shift_y - Utils.ScreenPixelsToUnit(indent_y);
-		go.transform.position = new Vector3(0.0f, pos_y, 0.0f);
-
-		m_Dungeon = go;
+		Utils.LoadBackground(game_obj_name, game_obj_name.ToLower(), new Vector2(242, 176), false);
+		m_Dungeon = GameObject.Find(game_obj_name);
 	}
 
 	void InitHero() {

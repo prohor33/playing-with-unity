@@ -112,7 +112,8 @@ public class KingSceneController : MonoBehaviour {
 		m_CurrentTask = Task.Talk;
 		m_CurrentReplicaNumber = 0;
 
-		float seconds = 1.0f;
+//		float seconds = 1.0f;
+		float seconds = 0.0f; // for debug!
 		for (int i = 0; i < m_TalkingDialog.Count; i++) {
 			Invoke(m_TalkingDialog[i].m_Author.ToString() + "Talk", seconds);
 
@@ -157,24 +158,7 @@ public class KingSceneController : MonoBehaviour {
 	}
 
 	void LoadKingSceneBackground() {
-		int indent_to_actual_image_x = 5;
-		int indent_to_actual_image_y = 105;
-		GameObject go = Utils.LoadSpriteIntoGO("king_scene_back", "Background");
-		Utils.AttachSriteToCameraInGO(go, KeyCode.X, 1.0f, indent_to_actual_image_x);
-		
-		SpriteRenderer sr = (SpriteRenderer)go.GetComponent(typeof(SpriteRenderer));
-		Sprite sprite = sr.sprite;
-		float image_pixels_to_unit = sr.bounds.size.y / sprite.textureRect.height;
-		
-//		int indent_y = (int)(Screen.height / 7.0f);	// special indent for bar on the top
-		int indent_y = 0;
-
-		bool align_top = false;
-		float shift_y = Camera.main.orthographicSize - sr.bounds.size.y / 2.0f
-			+ indent_to_actual_image_y * image_pixels_to_unit;
-		shift_y *= align_top ? 1.0f : -1.0f;
-		float pos_y = Camera.main.transform.position.y + shift_y - Utils.ScreenPixelsToUnit(indent_y);
-		go.transform.position = new Vector3(0.0f, pos_y, 0.0f);
+		Utils.LoadBackground("Background", "king_scene_back", new Vector2(5, 105), false);
 	}
 
 	// IEnumerators ----------------------------------
