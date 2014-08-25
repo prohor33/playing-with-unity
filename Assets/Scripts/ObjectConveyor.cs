@@ -12,7 +12,7 @@ public class ObjectConveyor {
 	bool m_NeedToScroll;
 	float m_Scroll;
 	float m_DeltaSpawnMove = 0.0f;
-	SpawnController m_SpawnContr = new SpawnController();
+	SpawnerOnConveyor m_SpawnContr = new SpawnerOnConveyor();
 	float m_Speed;
 	float m_ScrollingSlowingCoef;
 

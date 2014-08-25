@@ -18,6 +18,8 @@ public class MonsterLevelController : MonoBehaviour {
 	ObjectConveyor m_LeftConveyor = new ObjectConveyor(false);
 	ObjectConveyor m_RightConveyor  = new ObjectConveyor(true);
 
+	Spawner m_Spawner = new Spawner();
+
 	public void GameOver(bool win) {
 		if (win) { WinTheGame(); } else { LoseTheGame(); }
 	}
@@ -28,7 +30,7 @@ public class MonsterLevelController : MonoBehaviour {
 		m_GameState = GameState.Game;
 		m_MonsterContr.Restart();
 		InitConveyoers();
-		print("New game has started!");
+		InitSpawner();
 	}
 
 	public ObjectConveyor GetConveyor(bool right) {
@@ -47,10 +49,6 @@ public class MonsterLevelController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		StartNewGame();
-
-//		PlayerPrefs.SetInt("my_int", 5);
-//		int my_int = PlayerPrefs.GetInt("my_int");
-//		Debug.Log("my_int = " + my_int);
 	}
 
 	// Update is called once per frame
@@ -79,6 +77,7 @@ public class MonsterLevelController : MonoBehaviour {
 
 	void FixedUpdate() {
 		UpdateConveyor();
+		UpdateSpawner();
 	}
 
 	void SetGameOverText(string text) {
@@ -88,6 +87,10 @@ public class MonsterLevelController : MonoBehaviour {
 	void UpdateConveyor() {
 		m_RightConveyor.FixedUpdate();
 		m_LeftConveyor.FixedUpdate();
+	}
+
+	void UpdateSpawner() {
+		m_Spawner.FixedUpdate();
 	}
 		
 	void WinTheGame() {
@@ -106,6 +109,11 @@ public class MonsterLevelController : MonoBehaviour {
 		m_LeftConveyor.Restart();
 		m_RightConveyor.m_LevelContr = this;
 		m_RightConveyor.Restart();
+	}
+
+	void InitSpawner() {
+		m_Spawner.m_LevelContr = this;
+		m_Spawner.Init();
 	}
 
 	void HandleInput() {

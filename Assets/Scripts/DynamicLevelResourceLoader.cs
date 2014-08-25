@@ -5,8 +5,11 @@ public class DynamicLevelResourceLoader : MonoBehaviour {
 
 	MonsterLevelController m_LevelController;
 
+	// should we do this class unloadable like GameContr?
 	void Start() {
 		m_LevelController = Utils.GetTheClassFromGO<MonsterLevelController>("LevelController");
+
+		LoadLevelResources(GameContr.control.m_LevelPlaying);
 	}
 
 	void LoadLevelResources(int level) {
@@ -36,9 +39,10 @@ public class DynamicLevelResourceLoader : MonoBehaviour {
 		sprite_rend.transform.position = new Vector3(0.0f, new_pos_y, 0.0f);
 	}
 
-	// Starting point
+	// NOT a starting point for now
 	void OnLevelWasLoaded() {
-		LoadLevelResources(GameContr.control.m_LevelPlaying);
+		print("OnLevelWasLoaded");
+//		LoadLevelResources(GameContr.control.m_LevelPlaying);
 	}
 }
 

@@ -34,7 +34,7 @@ class SpawnObjectsInfo {
 	public string m_SpriteName;
 }
 
-public class SpawnController {
+public class SpawnerOnConveyor {
 	
 	public MonsterLevelController m_GameContr;
 
