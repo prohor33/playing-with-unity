@@ -28,6 +28,7 @@ public class MonsterLevelController : MonoBehaviour {
 		m_GameState = GameState.Game;
 		m_MonsterContr.Restart();
 		InitConveyoers();
+		print("New game has started!");
 	}
 
 	public ObjectConveyor GetConveyor(bool right) {
