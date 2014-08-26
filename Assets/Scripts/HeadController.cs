@@ -143,10 +143,14 @@ public class HeadController : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) 
 	{
-		if (other.tag != "FallingObject") {
-			return;
+		switch (other.tag) {
+		case "FallingBomb":
+			CatchBomb(other.gameObject);
+			break;
+		case "FallingObject":
+			TryToChewObject(other.gameObject);
+			break;
 		}
-		TryToChewObject(other.gameObject);
 	}
 
 	void TryToChewObject(GameObject go) {
@@ -324,6 +328,10 @@ public class HeadController : MonoBehaviour {
 
 	void UpdateAnimation() {
 		m_Animator.SetInteger("m_IsChewing", (m_State == HeadState.Chewing) ? 1 : 0);
+	}
+
+	void CatchBomb(GameObject bomb_go) {
+		Utils.GetTheClassFromGO<FallingBomb>(bomb_go).GetCatched();
 	}
 
 	// IEnumerators ----------------------------------

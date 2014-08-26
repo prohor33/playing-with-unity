@@ -102,7 +102,6 @@ public class SpawnerOnConveyor {
 			m_SpawnObjects[(SpawnObjectType)i] = new SpawnObjectsInfo((SpawnObjectType)i);
 
 		m_DeltaSpawnMove = GameContr.control.lvl_settings.GetDeltaSpawnMove();
-		Debug.Log("m_DeltaSpawnMove = " + m_DeltaSpawnMove);
 		m_LeftOrRightPrivilege = 0.0f;
 		m_PrivilegeChangingTrand = true;
 	}

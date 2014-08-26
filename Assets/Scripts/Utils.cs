@@ -112,7 +112,7 @@ public class Utils {
 	public static Vector2 GetCameraSize() {
 		Camera cam = Camera.main;
 		float height = 2f * cam.orthographicSize;
-		float width = height * cam.aspect;
+		float width = height * cam.aspect;	// The aspect ratio (width divided by height)
 		return new Vector2(width, height);
 	}
 	public static Vector2 GetCameraPos() {
@@ -154,6 +154,12 @@ public class Utils {
 		shift_y *= align_top ? 1.0f : -1.0f;
 		float pos_y = Camera.main.transform.position.y + shift_y - Utils.ScreenPixelsToUnit(sp_bar_indent_y);
 		go.transform.position = new Vector3(0.0f, pos_y, 0.0f);
+	}
+
+	public static GameObject GetChildGO(GameObject FromGameObject, string WithName) {
+		Transform[] ts = FromGameObject.transform.GetComponentsInChildren<Transform	>();
+		foreach (Transform t in ts) if (t.gameObject.name == WithName) return t.gameObject;
+		return null;
 	}
 }
 
