@@ -10,15 +10,15 @@ public class MonsterController : MonoBehaviour {
 	public float m_HeadMaxDeltaPos;
 	public float m_GrowingCoefficient;
 
-	HeadController m_LeftHeadContr;
-	HeadController m_RightHeadContr;
+	public HeadController m_LeftHeadContr;
+	public HeadController m_RightHeadContr;
 	Vector3 m_TargetPos;
 	const float m_StartPosY = 2.5f;
 	float m_MassEaten = 0.0f;
 
 	enum MonsterState {Destroyed, Normal, AttackingTheCake};
 	MonsterState m_State;
-	
+
 	public void Restart() {
 		m_LeftHeadContr = (HeadController)m_LeftHead.GetComponent(typeof(HeadController));
 		m_RightHeadContr = (HeadController)m_RightHead.GetComponent(typeof(HeadController));

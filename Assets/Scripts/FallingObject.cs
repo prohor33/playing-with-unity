@@ -40,6 +40,18 @@ public class FallingObject : MonoBehaviour {
 		SetSpeed(m_FallingSpeed);
 	}
 
+	public void ImpactByBombBlowingUp(Vector3 bomb_p) {
+		m_State = FOState.FallingDown;
+		rigidbody2D.isKinematic = false;
+
+		Vector3 force_dir = transform.position - bomb_p;
+		const float blow_up_power = 30.0f;
+		force_dir.Normalize();
+		force_dir *= blow_up_power;
+		rigidbody2D.velocity = force_dir;
+		rigidbody2D.gravityScale = 4.0f;
+	}
+
 	public void SetRotationSpeed(float rot_speed) {
 		m_RotationSpeed = rot_speed;
 	}

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FallingBomb : MonoBehaviour {
 
-	public void GetCatched() {
+	public void StopFalling() {
 		rigidbody2D.velocity = Vector3.zero;
 		rigidbody2D.isKinematic = true;
 
@@ -14,12 +14,21 @@ public class FallingBomb : MonoBehaviour {
 	void Start () {	
 	}
 
-	void Update () {	
+	void FixedUpdate () {
+		Vector3 screen_bottom_falling_p = new Vector3(0.0f, 0.15f, 0.0f);
+		float min_falling_y = Camera.main.ViewportToWorldPoint(screen_bottom_falling_p).y;
+		if (transform.position.y < min_falling_y)
+			StopFalling();
 	}
 
 	void BlowUp() {
 		const float blowing_up_time = 0.1f;
 		StartCoroutine(BlowingUp(blowing_up_time));
+
+		const float impact_radius = 5.0f;
+		MonsterController mc = Utils.GetTheClassFromGO<MonsterController>("Monster");
+		mc.m_LeftHeadContr.BlowUpBomb(transform.position, impact_radius);
+		mc.m_RightHeadContr.BlowUpBomb(transform.position, impact_radius);
 	}
 
 	// TODO: more smart blowing up?

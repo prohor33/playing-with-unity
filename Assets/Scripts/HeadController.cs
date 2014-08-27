@@ -103,6 +103,25 @@ public class HeadController : MonoBehaviour {
 		}
 	}
 
+	public void BlowUpBomb(Vector3 bomb_p, float impact_radius) {
+
+		System.Collections.Generic.List<FallingObject> m_ObjectsToRemove = new System.Collections.Generic.List<FallingObject>();
+
+		foreach (FallingObject fo in m_ChewingObjects)	{
+			Vector3 fo_p = fo.gameObject.transform.position;
+			float distance = Vector3.Distance(fo_p, bomb_p);
+			if (distance > impact_radius)
+				continue;
+			fo.ImpactByBombBlowingUp(bomb_p);
+			m_MassChewingObjs -= fo.GetMass();
+			m_ObjectsToRemove.Add(fo);
+		}
+
+		foreach (FallingObject fo in m_ObjectsToRemove) {
+			m_ChewingObjects.Remove(fo);
+		}
+	}
+
 	// Private functions ---------------------------------------
 
 	// Use this for initialization
@@ -145,7 +164,7 @@ public class HeadController : MonoBehaviour {
 	{
 		switch (other.tag) {
 		case "FallingBomb":
-			CatchBomb(other.gameObject);
+			// do nothing
 			break;
 		case "FallingObject":
 			TryToChewObject(other.gameObject);
@@ -328,10 +347,6 @@ public class HeadController : MonoBehaviour {
 
 	void UpdateAnimation() {
 		m_Animator.SetInteger("m_IsChewing", (m_State == HeadState.Chewing) ? 1 : 0);
-	}
-
-	void CatchBomb(GameObject bomb_go) {
-		Utils.GetTheClassFromGO<FallingBomb>(bomb_go).GetCatched();
 	}
 
 	// IEnumerators ----------------------------------
