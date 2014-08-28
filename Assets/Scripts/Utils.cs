@@ -8,23 +8,6 @@ public class Utils {
 	public static int level_select_level = 2;
 	public static int monster_level = 3;
 
-	// TODO: to delete?
-	public static float X320ToAnyRes(float x) {
-		return x / 320.0f * Screen.width;
-	}
-	public static float Y480ToAnyRes(float y) {
-		return y / 480.0f * Screen.height;
-	}
-
-	public static float ScreenPixelsToUnit(float x) {
-		float ratio = 2.0f * Camera.main.orthographicSize / Camera.main.pixelHeight;
-		return x * ratio;
-	}
-	public static float UnitToScreenPixels(float x) {
-		float ratio = 2.0f * Camera.main.orthographicSize / Camera.main.pixelHeight;
-		return x / ratio;
-	}
-
 	public static Sprite LoadSprite(string spr_name) {
 		Sprite sprite = Resources.Load<Sprite>(spr_name);
 		if (!sprite)
@@ -109,6 +92,27 @@ public class Utils {
 		go.transform.localScale = new Vector3(scale, scale, 1.0f);
 	}
 
+	public static float ScreenPixelsToUnitX(float x) {
+		float ratio = GetCameraSize().x / Camera.main.pixelWidth;
+		return x * ratio;
+	}
+	public static float UnitToScreenPixelsX(float x) {
+		float ratio = GetCameraSize().x / Camera.main.pixelWidth;
+		return x / ratio;
+	}
+	public static float ScreenPixelsToUnitY(float y) {
+		float ratio = GetCameraSize().y / Camera.main.pixelHeight;
+		return y * ratio;
+	}
+	public static float UnitToScreenPixelsY(float y) {
+		float ratio = GetCameraSize().y / Camera.main.pixelHeight;
+		return y / ratio;
+	}
+
+	public static Vector2 ScreenDeltaToWorld(Vector2 v) {
+		return new Vector2(ScreenPixelsToUnitX(v.x), ScreenPixelsToUnitY(v.y));
+	}
+
 	public static Vector2 GetCameraSize() {
 		Camera cam = Camera.main;
 		float height = 2f * cam.orthographicSize;
@@ -152,7 +156,7 @@ public class Utils {
 		float shift_y = Camera.main.orthographicSize - sr.bounds.size.y / 2.0f
 			+ indent_to_actual_image.y * image_pixels_to_unit;
 		shift_y *= align_top ? 1.0f : -1.0f;
-		float pos_y = Camera.main.transform.position.y + shift_y - Utils.ScreenPixelsToUnit(sp_bar_indent_y);
+		float pos_y = Camera.main.transform.position.y + shift_y - Utils.ScreenPixelsToUnitY(sp_bar_indent_y);
 		go.transform.position = new Vector3(0.0f, pos_y, 0.0f);
 	}
 

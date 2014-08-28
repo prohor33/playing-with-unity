@@ -78,7 +78,6 @@ public class CharactersTalkingDialog : MonoBehaviour {
 	IEnumerator ShowDialog(float time) {
 		float t = 0.0f;
 		float rate = 1.0f / time;
-		print(time);
 		while (t < 1.0f) {
 			t += Time.deltaTime * rate;
 			yield return null;

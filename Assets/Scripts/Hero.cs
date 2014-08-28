@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Hero : MonoBehaviour {
 
 	Animator m_Animator;
-	LevelsSceneController m_LevelsSceneController;
+	DungeonSceneController m_LevelsSceneController;
 	List<Vector3> m_Path = new List<Vector3>();
 
 	float m_CurrT;
@@ -18,7 +18,7 @@ public class Hero : MonoBehaviour {
 	Direction m_Direction;
 	Direction m_OldDirection;
 
-	public void Init(float scale, Vector3 pos, LevelsSceneController levels_scene_controller) {
+	public void Init(float scale, Vector3 pos, DungeonSceneController levels_scene_controller) {
 		InitPath(scale, pos);
 		m_CurrT = 0.0f;
 		m_TargetT = -1.0f; // there is no target
@@ -108,13 +108,13 @@ public class Hero : MonoBehaviour {
 	int GetSectionIndex(float t) {
 
 		if (t < 0.0f || t > 1.0f) {
-			Debug.LogError("GetSectionIndex()");
+			Debug.LogError("GetSectionIndex() 1");
 			return -1;
 		}
 
 		int sections_n = m_Path.Count - 1;
 		if (sections_n < 1) {
-			Debug.LogError("GetSectionIndex()");
+			Debug.LogError("GetSectionIndex() 2");
 			return -1;
 		}
 		

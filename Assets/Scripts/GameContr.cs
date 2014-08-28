@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GameContr : MonoBehaviour {
 
+	public static bool m_RunOnMac = true;
+
 	public static GameContr control;
 	public LevelsSettings lvl_settings = new LevelsSettings();
 
@@ -55,9 +57,9 @@ public class GameContr : MonoBehaviour {
 	}
 
 	void OnEnable() {
-		SaveLoad.Load();
+//		SaveLoad.Load();
 		// or
-//		ResetSavingData();
+		ResetSavingData();
 	}
 
 	void OnDisable() {

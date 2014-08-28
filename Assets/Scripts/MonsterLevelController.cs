@@ -142,6 +142,9 @@ public class MonsterLevelController : MonoBehaviour {
 	}
 
 	void HandleTouches() {
+		if (InputController.Update())
+			return;
+
 		for (int i = 0; i < Input.touchCount; i++) {
 			Touch touch = Input.GetTouch(i);
 			if (touch.phase != TouchPhase.Moved)

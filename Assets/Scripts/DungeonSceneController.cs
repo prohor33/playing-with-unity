@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class LevelsSceneController : MonoBehaviour {
+public class DungeonSceneController : MonoBehaviour {
 
 	public GUISkin m_LevelButtonSkin;
 	public GUISkin m_BackButtonSkin;

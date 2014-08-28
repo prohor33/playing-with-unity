@@ -7,7 +7,7 @@ public class FallingBomb : MonoBehaviour {
 		rigidbody2D.velocity = Vector3.zero;
 		rigidbody2D.isKinematic = true;
 
-		const float heat_up_time = 2.0f;
+		const float heat_up_time = 20.0f;
 		StartCoroutine(HeatingUp(heat_up_time));
 	}
 
