@@ -86,12 +86,25 @@ public class InputController {
 			Vector2 world_delta = Utils.ScreenDeltaToWorld(screen_delta);
 
 			Vector3 world_delta_3d = new Vector3(world_delta.x, world_delta.y, 0.0f);
-			
-			m_PickedObject.position += world_delta_3d;
+
+			FallingBomb fb = Utils.GetTheClassFromGO<FallingBomb>(m_PickedObject.gameObject);
+			fb.MoveByFinger(world_delta_3d);
+
+
+//			if (m_PickedObject.CompareTag("FallingBomb")) {
+//
+//			} else {
+//				m_PickedObject.position += world_delta_3d;
+//			}
 			return true;
 		} else if (m_PickedObject && touch.phase == TouchPhase.Ended) {
 //			Debug.Log("Touch phase Ended");
-			
+
+			if (m_PickedObject.CompareTag("FallingBomb")) {
+				FallingBomb fb = Utils.GetTheClassFromGO<FallingBomb>(m_PickedObject.gameObject);
+				fb.EndMovingByFinger();
+			}
+
 			m_PickedObject = null;
 			
 			return true;

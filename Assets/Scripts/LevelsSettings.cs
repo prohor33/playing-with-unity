@@ -22,7 +22,7 @@ public class LevelsSettings {
 
 	float[] m_HeadEatMassPerSecond = {2.0f, 3.0f, 4.0f, 6.0f, 8.0f, 12.0f, 15.0f};
 	float[] m_DeltaSpawnMove = {6.0f, 10.0f, 10.0f, 10.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f};
-	float[] m_DeltaFireballTime = {2.0f, 10.0f, 10.0f, 10.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f};
+	float[] m_DeltaFireballTime = {8.0f, 10.0f, 10.0f, 10.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f};
 
 }
 

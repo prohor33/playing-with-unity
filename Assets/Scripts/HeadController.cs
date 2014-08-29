@@ -113,11 +113,11 @@ public class HeadController : MonoBehaviour {
 			if (distance > impact_radius)
 				continue;
 			fo.ImpactByBombBlowingUp(bomb_p);
-			m_MassChewingObjs -= fo.GetMass();
 			m_ObjectsToRemove.Add(fo);
 		}
 
 		foreach (FallingObject fo in m_ObjectsToRemove) {
+			m_MassChewingObjs -= fo.GetMass() * (1.0f - fo.GetChewingProcess());
 			m_ChewingObjects.Remove(fo);
 		}
 	}
@@ -200,7 +200,7 @@ public class HeadController : MonoBehaviour {
 	void StartChewObjects(FallingObject falling_obj) {
 		GameObject go = falling_obj.gameObject;
 		m_ChewingObjects.Add(falling_obj);
-		m_MassChewingObjs += go.rigidbody2D.mass;
+		m_MassChewingObjs += falling_obj.GetMass();
 		float speed_was = falling_obj.GetSpeed();
 		ApplyImpulse(go.rigidbody2D.mass * speed_was);
 		
@@ -289,14 +289,8 @@ public class HeadController : MonoBehaviour {
 	void EatMass(float mass, FallingObject fo = null) {	// if fo != null => destroy the object
 		m_MonsterContr.EatMass(mass);
 		if (fo) {
-			Predicate<FallingObject> fo_finder = (FallingObject p) => { return p == fo; };
-			int i = m_ChewingObjects.FindIndex(fo_finder);
-			if (i == -1) {
-				Debug.LogWarning("EatMass() failed");
-				return;
-			}
-			Destroy(m_ChewingObjects[i]);
-			m_ChewingObjects.Remove(m_ChewingObjects[i]);
+			m_ChewingObjects.Remove(fo);
+			Destroy(fo);
 		}
 		m_MassChewingObjs -= mass;
 		if (m_MassChewingObjs < 0.001f)

@@ -3,25 +3,56 @@ using System.Collections;
 
 public class FallingBomb : MonoBehaviour {
 
-	public void StopFalling() {
-		rigidbody2D.velocity = Vector3.zero;
-		rigidbody2D.isKinematic = true;
+	bool m_IsMovingByFinger;
+	Vector3 m_FingerSpeed;
+	float m_LastMovingByFingerTime;
 
-		const float heat_up_time = 20.0f;
+	enum State { Falling = 0, Heating, BlowingUp };
+	State m_State;
+
+	public void StopFalling() {
+		m_State = State.Heating;
+		rigidbody2D.velocity = Vector3.zero;
+		rigidbody2D.isKinematic = true;	// If isKinematic is enabled, Forces, collisions or joints will not affect the rigidbody anymore
+
+		const float heat_up_time = 3.0f;
 		StartCoroutine(HeatingUp(heat_up_time));
 	}
 
-	void Start () {	
+	public void MoveByFinger(Vector3 delta_p) {
+		if (m_IsMovingByFinger) {
+			Vector3 speed = delta_p / (Time.time - m_LastMovingByFingerTime);
+			rigidbody2D.velocity = speed;
+			rigidbody2D.isKinematic = false; // If isKinematic is enabled, Forces, collisions or joints will not affect the rigidbody anymore
+			m_LastMovingByFingerTime = Time.time;
+		} else {
+			// start moving by finger
+			m_IsMovingByFinger = true;
+			m_LastMovingByFingerTime = Time.time;
+		}
+	}
+
+	public void EndMovingByFinger() {
+		m_IsMovingByFinger = false;
+		rigidbody2D.velocity = Vector3.zero;
+	}
+
+	void Start () {
+		m_IsMovingByFinger = false;
+		m_State = State.Falling;
 	}
 
 	void FixedUpdate () {
-		Vector3 screen_bottom_falling_p = new Vector3(0.0f, 0.15f, 0.0f);
-		float min_falling_y = Camera.main.ViewportToWorldPoint(screen_bottom_falling_p).y;
-		if (transform.position.y < min_falling_y)
-			StopFalling();
+		if (m_State == State.Falling) {
+			Vector3 screen_bottom_falling_p = new Vector3(0.0f, 0.15f, 0.0f);
+			float min_falling_y = Camera.main.ViewportToWorldPoint(screen_bottom_falling_p).y;
+			if (transform.position.y < min_falling_y)
+				StopFalling();
+		}
 	}
 
 	void BlowUp() {
+		m_State = State.BlowingUp;
 		const float blowing_up_time = 0.1f;
 		StartCoroutine(BlowingUp(blowing_up_time));
 

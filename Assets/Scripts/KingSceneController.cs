@@ -158,7 +158,7 @@ public class KingSceneController : MonoBehaviour {
 	}
 
 	void LoadKingSceneBackground() {
-		Utils.LoadBackground("Background", "king_scene_back", new Vector2(5, 105), false);
+		Utils.LoadBackground("Background", "king_scene_back", new Vector2(25, 105), false);
 	}
 
 	// IEnumerators ----------------------------------
