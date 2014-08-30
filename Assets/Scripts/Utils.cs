@@ -42,14 +42,18 @@ public class Utils {
 		return go;
 	}
 
-	public static GameObject LoadSpriteIntoGO(string spr_name, string game_obj_name) {
-		Sprite sprite = LoadSprite(spr_name);
-		
+	public static GameObject LoadSpriteIntoGO(string spr_name, string game_obj_name) {		
 		GameObject go = GameObject.Find(game_obj_name);
 		if (!go) {
 			Debug.LogError("Can't find " + game_obj_name);
 		}
 
+		LoadSpriteIntoGO(spr_name, go);
+		return go;
+	}
+	public static GameObject LoadSpriteIntoGO(string spr_name, GameObject go) {
+		Sprite sprite = LoadSprite(spr_name);
+		
 		SpriteRenderer sr = (SpriteRenderer)go.GetComponent(typeof(SpriteRenderer));
 		if (!sr) {
 			Debug.LogError("Can't find SpriteRenderer");
@@ -60,7 +64,7 @@ public class Utils {
 
 	public static float AttachSriteToCameraInGO(GameObject go, KeyCode axis, float part = 1.0f, int offset_inside_image = 0) {
 		
-		SpriteRenderer sr = (SpriteRenderer)go.GetComponent(typeof(SpriteRenderer));
+		SpriteRenderer sr = (SpriteRenderer)go.GetComponentInChildren(typeof(SpriteRenderer));
 		if (!sr) {
 			Debug.LogError("Can't find SpriteRenderer");
 		}

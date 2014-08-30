@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Spawner {
 
-	public MonsterLevelController m_LevelContr;
+	public LevelController m_LevelContr;
 
 	float m_FireballSpawnDeltaTime;
 

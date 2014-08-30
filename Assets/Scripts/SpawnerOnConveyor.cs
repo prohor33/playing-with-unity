@@ -36,7 +36,7 @@ class SpawnObjectsInfo {
 
 public class SpawnerOnConveyor {
 	
-	public MonsterLevelController m_GameContr;
+	public LevelController m_GameContr;
 
 	float m_DeltaSpawnMove;	// set from lvl_settings
 	float m_SpeedDeltaSpawnMoveCoef = 1.0f;

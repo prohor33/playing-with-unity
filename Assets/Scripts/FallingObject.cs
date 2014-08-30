@@ -157,6 +157,9 @@ public class FallingObject : MonoBehaviour {
 	}
 
 	void SetText(string str) {
+		if (!GameContr.m_DebugGUITextIsOn)
+			return;
+
 		GUIText guiText = GetComponentInChildren(typeof(GUIText)) as GUIText;
 		guiText.text = str;
 	}

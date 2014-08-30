@@ -4,6 +4,7 @@ using System.Collections;
 public class GameContr : MonoBehaviour {
 
 	public static bool m_RunOnMac = true;
+	public static bool m_DebugGUITextIsOn = false;
 
 	public static GameContr control;
 	public LevelsSettings lvl_settings = new LevelsSettings();

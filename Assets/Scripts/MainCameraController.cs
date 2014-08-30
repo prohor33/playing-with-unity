@@ -25,8 +25,6 @@ public class MainCameraController : MonoBehaviour {
 
 		m_TargetPos.y += sp_delta;
 
-		// Check if camera is above the cake
-		m_TargetPos.y = Mathf.Clamp(m_TargetPos.y, 0.0f, m_Cake.transform.position.y);
 
 		Move();
 	}

@@ -16,6 +16,9 @@ public class TextMassController : MonoBehaviour {
 	
 	void Start () 
 	{
+		if (!GameContr.m_DebugGUITextIsOn)
+			Destroy(gameObject);
+
 		thisTransform = transform;
 		if (useMainCamera)
 			cam = Camera.main;

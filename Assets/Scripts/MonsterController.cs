@@ -5,10 +5,8 @@ public class MonsterController : MonoBehaviour {
 
 	public GameObject m_LeftHead;
 	public GameObject m_RightHead;
-	public GameObject m_Cake;
-	public MonsterLevelController m_LvlController;
+	public LevelController m_LvlController;
 	public float m_HeadMaxDeltaPos;
-	public float m_GrowingCoefficient;
 
 	public HeadController m_LeftHeadContr;
 	public HeadController m_RightHeadContr;
@@ -24,7 +22,7 @@ public class MonsterController : MonoBehaviour {
 		m_RightHeadContr = (HeadController)m_RightHead.GetComponent(typeof(HeadController));
 		m_MassEaten = 0.0f;
 		m_State = MonsterState.Normal;
-		m_TargetPos.y = m_StartPosY + m_MassEaten * m_GrowingCoefficient;
+		m_TargetPos.y = m_StartPosY;
 		m_LeftHeadContr.Restart();
 		m_RightHeadContr.Restart();
 	}
@@ -33,11 +31,6 @@ public class MonsterController : MonoBehaviour {
 		if (!IsOk())
 			return;
 		m_MassEaten += mass;
-		UpdateMoving();
-	}
-	
-	public void ReachTheCakeCallback() {
-		m_LvlController.GameOver(false);
 	}
 
 	public HeadController GetTheHead(bool right) {
@@ -67,14 +60,6 @@ public class MonsterController : MonoBehaviour {
 		if (Mathf.Abs(left_head_p - right_head_p) > m_HeadMaxDeltaPos)
 			MakeOneHeadFalling(left_head_p < right_head_p);
 
-		// Check if monster reach the cake
-		const float distance_to_reach = 2.0f;
-		if (Mathf.Abs(Mathf.Min(left_head_p, right_head_p) +
-		              transform.position.y - m_Cake.transform.position.y) < distance_to_reach &&
-		    IsHeadsOk()) {
-			AttackTheCake();
-		}
-
 		// Check if monster is destroyed
 		const float delta_min = -1.0f;
 		if (Mathf.Max(left_head_p, right_head_p) < m_LeftHeadContr.GetMinPos() + delta_min &&
@@ -83,19 +68,12 @@ public class MonsterController : MonoBehaviour {
 		}
 	}
 
-	void UpdateMoving() {
-		SetTarget(m_StartPosY + m_MassEaten * m_GrowingCoefficient);
-	}
-
 	void SetTarget(float y) {
 		m_TargetPos.y = y;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKey(KeyCode.A)) {
-			AttackTheCake();
-		}
 		if (Input.GetKey(KeyCode.D)) {
 			DestroyTheMonster();
 		}
@@ -116,18 +94,11 @@ public class MonsterController : MonoBehaviour {
 			m_RightHeadContr.Fall();
 	}
 
-	void AttackTheCake() {
-		Vector3 cake_pos = m_Cake.transform.position;
-		m_State = MonsterState.AttackingTheCake;
-		m_LeftHeadContr.AttackTheCake(cake_pos);
-		m_RightHeadContr.AttackTheCake(cake_pos);
-	}
-	
 	void DestroyTheMonster() {
 		if (!IsHeadsOk())
 			return;
 		Debug.Log("DestroyTheMonster");
-		m_LvlController.GameOver(true);
+		m_LvlController.GameOver();
 		m_LeftHeadContr.MonsterIsDestroying();
 		m_RightHeadContr.MonsterIsDestroying();
 		SetTarget(-10.0f);

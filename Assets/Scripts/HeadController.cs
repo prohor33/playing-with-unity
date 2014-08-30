@@ -6,7 +6,7 @@ public class HeadController : MonoBehaviour {
 
 	public bool m_IsRightHead;
 	public GameObject m_Monster;
-	public MonsterLevelController m_LevelController;
+	public LevelController m_LevelController;
 	public AudioClip m_ImpactAudio;
 
 	MonsterController m_MonsterContr;
@@ -51,13 +51,6 @@ public class HeadController : MonoBehaviour {
 
 	public float GetMassChewingObjs() {
 		return m_MassChewingObjs;
-	}
-
-	public void AttackTheCake(Vector3 cake_pos) {
-		m_State = HeadState.AttackingTheCake;
-		cake_pos.y -= m_Monster.transform.position.y;
-		StartCoroutine(AttackTheCakeTrans(transform, transform.localPosition, cake_pos, 3.0f));
-		FallChewingObjects();
 	}
 
 	public void MonsterIsDestroying() {
@@ -238,6 +231,9 @@ public class HeadController : MonoBehaviour {
 	}
 
 	void UpdateMassText() {
+		if (!GameContr.m_DebugGUITextIsOn)
+			return;
+
 		GUIText guiText = GetComponentInChildren(typeof(GUIText)) as GUIText;
 		guiText.text = ((int)m_MassChewingObjs).ToString();
 	}
@@ -367,12 +363,6 @@ public class HeadController : MonoBehaviour {
 		yield return StartCoroutine(MoveObject(trans, start_p, end_p, time));
 		m_State = HeadState.Stationary;
 		yield return null;
-	}
-
-	IEnumerator AttackTheCakeTrans(Transform trans, Vector3 start_p,
-	                                   Vector3 end_p, float time) {
-		yield return StartCoroutine(MoveObject(trans, start_p, end_p, time));
-		m_MonsterContr.ReachTheCakeCallback();
 	}
 
 	IEnumerator DestroyTheHead(Transform trans, Vector3 start_p,

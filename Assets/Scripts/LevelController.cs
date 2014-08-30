@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MonsterLevelController : MonoBehaviour {
+public class LevelController : MonoBehaviour {
 	
 	public GameObject m_GameOverText;
 	public GameObject m_Monster;
@@ -10,9 +10,13 @@ public class MonsterLevelController : MonoBehaviour {
 	public int m_Level = 1;
 	public Texture2D m_RestartIcon;
 
+	public static LevelController control;
+
 	public const float m_MaxCameraPosition = 20.0f;
 
-	enum GameState {GameLost, GameWon, Game};
+	public PointKeeper m_PointKeeper = new PointKeeper();
+
+	enum GameState {GameFinished, Game};
 	GameState m_GameState;
 	MonsterController m_MonsterContr;
 	ObjectConveyor m_LeftConveyor = new ObjectConveyor(false);
@@ -20,8 +24,12 @@ public class MonsterLevelController : MonoBehaviour {
 
 	Spawner m_Spawner = new Spawner();
 
-	public void GameOver(bool win) {
-		if (win) { WinTheGame(); } else { LoseTheGame(); }
+	public void GameOver() {
+		GameContr.control.PassLevel();
+//		SetGameOverText("You Won!");
+		m_GameState = GameState.GameFinished;
+		
+		StartLevelResultsDialog();
 	}
 
 	public void StartNewGame() {
@@ -49,6 +57,15 @@ public class MonsterLevelController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		StartNewGame();
+		GameOver();
+	}
+
+	void Awake() {
+		if (control == null) {
+			control = this;
+		} else if (control != this) {
+			Destroy(gameObject);
+		}
 	}
 
 	// Update is called once per frame
@@ -92,17 +109,6 @@ public class MonsterLevelController : MonoBehaviour {
 	void UpdateSpawner() {
 		m_Spawner.FixedUpdate();
 	}
-		
-	void WinTheGame() {
-		GameContr.control.PassLevel();
-		SetGameOverText("You Won!");
-		m_GameState = GameState.GameWon;
-	}
-	
-	void LoseTheGame() {
-		SetGameOverText("You Lost :(");
-		m_GameState = GameState.GameLost;
-	}
 
 	void InitConveyoers() {
 		m_LeftConveyor.m_LevelContr = this;
@@ -121,10 +127,7 @@ public class MonsterLevelController : MonoBehaviour {
 			StartNewGame();
 		}
 		if (Input.GetKey(KeyCode.G)) {
-			WinTheGame();
-		}
-		if (Input.GetKey(KeyCode.L)) {
-			LoseTheGame();
+			GameOver();
 		}
 		if (Input.GetKey(KeyCode.F)) {
 			m_MonsterContr.GetTheHead(true).Fall();
@@ -169,5 +172,9 @@ public class MonsterLevelController : MonoBehaviour {
 			m_FPSText.guiText.text = ((int)fps).ToString();
 			m_FPSChangedTime = 0.0f;
 		}
+	}
+
+	void StartLevelResultsDialog() {
+		LevelResultsDialog lrd = LevelResultsDialog.Instantiate();
 	}
 }

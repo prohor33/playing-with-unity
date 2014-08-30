@@ -3,11 +3,11 @@ using System.Collections;
 
 public class DynamicLevelResourceLoader : MonoBehaviour {
 
-	MonsterLevelController m_LevelController;
+	LevelController m_LevelController;
 
 	// should we do this class unloadable like GameContr?
 	void Start() {
-		m_LevelController = Utils.GetTheClassFromGO<MonsterLevelController>("LevelController");
+		m_LevelController = Utils.GetTheClassFromGO<LevelController>("LevelController");
 
 		LoadLevelResources(GameContr.control.m_LevelPlaying);
 	}
@@ -31,7 +31,7 @@ public class DynamicLevelResourceLoader : MonoBehaviour {
 		sprite_rend.sprite = sprite;
 
 		// Scale sprite to fit with height
-		float new_size_y = Utils.GetCameraSize().y + (MonsterLevelController.m_MaxCameraPosition - Utils.GetCameraPos().y);
+		float new_size_y = Utils.GetCameraSize().y + (LevelController.m_MaxCameraPosition - Utils.GetCameraPos().y);
 		float scale = new_size_y / sprite_rend.bounds.size.y;
 		Utils.ScaleSpriteInGO(obj, scale);
 		
