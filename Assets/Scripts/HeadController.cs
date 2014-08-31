@@ -159,6 +159,7 @@ public class HeadController : MonoBehaviour {
 		case "FallingBomb":
 			// do nothing
 			break;
+		case "Vase":
 		case "FallingObject":
 			TryToChewObject(other.gameObject);
 			break;

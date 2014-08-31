@@ -40,6 +40,8 @@ public class Spawner {
 		go.rigidbody2D.velocity = v;
 		go.rigidbody2D.isKinematic = false;	// If isKinematic is enabled, Forces, collisions or joints will not affect the rigidbody anymore
 		go.collider2D.isTrigger = true;
+
+		LevelController.control.m_PointKeeper.AddBomb();
 	}
 }
 

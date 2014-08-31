@@ -7,18 +7,11 @@ public class PointKeeper {
 	}
 	
 	public void Reset() {
-//		m_Points = 0;
-//		m_BombsSaved = 0;
-//		m_BombsWas = 0;
-//		m_VaseSaved = 0;
-//		m_VaseWas = 0;
-//		m_TimeGone = 0;
-
-		m_Points = 134;
-		m_BombsSaved = 12;
-		m_BombsWas = 15;
-		m_VaseSaved = 4;
-		m_VaseWas = 5;
+		m_Points = 0;
+		m_BombsSaved = 0;
+		m_BombsWas = 0;
+		m_VaseSaved = 0;
+		m_VaseWas = 0;
 		m_TimeGone = 0;
 	}
 	
@@ -69,15 +62,17 @@ public class PointKeeper {
 		}
 	}
 	
-	public void AddBomb(bool saved) {
+	public void AddBomb() {
 		m_BombsWas++;
-		if (saved)
-			m_BombsSaved++;
 	}
-	public void AddVase(bool saved) {
+	public void AddBombSaved() {
+		m_BombsSaved++;
+	}
+	public void AddVase() {
 		m_VaseWas++;
-		if (saved)
-			m_VaseSaved++;
+	}
+	public void AddVaseSaved() {
+		m_VaseSaved++;
 	}
 	public void SetTimeGone(int time) {
 		m_TimeGone = time;

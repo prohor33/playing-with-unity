@@ -67,9 +67,10 @@ public class InputController {
 		
 		if (touch.phase == TouchPhase.Began) {
 //			Debug.Log("Touch phase began at: " + touch.position);
-			
+
+//			don't catch the vase all the time!
 			RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(touch.position), Vector2.zero, 
-			                                     10.0f, 1 << LayerMask.NameToLayer("FallingBomb"));
+			                                     10.0f, 1 << LayerMask.NameToLayer("MovingByFingerObjects"));
 			if (hit.collider != null) { 
 				m_PickedObject = hit.transform;
 				Debug.Log("catch object" + m_PickedObject.gameObject.name);
@@ -87,8 +88,14 @@ public class InputController {
 
 			Vector3 world_delta_3d = new Vector3(world_delta.x, world_delta.y, 0.0f);
 
-			FallingBomb fb = Utils.GetTheClassFromGO<FallingBomb>(m_PickedObject.gameObject);
-			fb.MoveByFinger(world_delta_3d);
+			if (m_PickedObject.gameObject.tag == "FallingBomb") {
+				FallingBomb fb = Utils.GetTheClassFromGO<FallingBomb>(m_PickedObject.gameObject);
+				fb.MoveByFinger(world_delta_3d);
+			} else if (m_PickedObject.gameObject.tag == "Vase") {
+				Debug.Log("Move vase");
+				FallingObject fo = Utils.GetTheClassFromGO<FallingObject>(m_PickedObject.gameObject);
+				fo.MoveByFinger(world_delta_3d);
+			}
 
 
 //			if (m_PickedObject.CompareTag("FallingBomb")) {
@@ -103,6 +110,10 @@ public class InputController {
 			if (m_PickedObject.CompareTag("FallingBomb")) {
 				FallingBomb fb = Utils.GetTheClassFromGO<FallingBomb>(m_PickedObject.gameObject);
 				fb.EndMovingByFinger();
+			}
+			if (m_PickedObject.CompareTag("Vase")) {
+				FallingObject fo = Utils.GetTheClassFromGO<FallingObject>(m_PickedObject.gameObject);
+				fo.EndMovingByFinger();
 			}
 
 			m_PickedObject = null;

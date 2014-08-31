@@ -15,19 +15,22 @@ public class LevelController : MonoBehaviour {
 	public const float m_MaxCameraPosition = 20.0f;
 
 	public PointKeeper m_PointKeeper = new PointKeeper();
+	public ObjectConveyor m_LeftConveyor = new ObjectConveyor(false);
+	public ObjectConveyor m_RightConveyor  = new ObjectConveyor(true);
 
 	enum GameState {GameFinished, Game};
 	GameState m_GameState;
 	MonsterController m_MonsterContr;
-	ObjectConveyor m_LeftConveyor = new ObjectConveyor(false);
-	ObjectConveyor m_RightConveyor  = new ObjectConveyor(true);
-
 	Spawner m_Spawner = new Spawner();
+	float m_LevelStartTime;
 
 	public void GameOver() {
 		GameContr.control.PassLevel();
 //		SetGameOverText("You Won!");
 		m_GameState = GameState.GameFinished;
+
+		float time_gone = Time.time - m_LevelStartTime;
+		LevelController.control.m_PointKeeper.SetTimeGone((int)time_gone);
 		
 		StartLevelResultsDialog();
 	}
@@ -36,6 +39,7 @@ public class LevelController : MonoBehaviour {
 		m_MonsterContr = (MonsterController)m_Monster.GetComponent(typeof(MonsterController));
 		SetGameOverText("");
 		m_GameState = GameState.Game;
+		m_LevelStartTime = Time.time;
 		m_MonsterContr.Restart();
 		InitConveyoers();
 		InitSpawner();
@@ -57,7 +61,6 @@ public class LevelController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		StartNewGame();
-		GameOver();
 	}
 
 	void Awake() {

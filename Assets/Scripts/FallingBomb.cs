@@ -6,6 +6,7 @@ public class FallingBomb : MonoBehaviour {
 	bool m_IsMovingByFinger;
 	Vector3 m_FingerSpeed;
 	float m_LastMovingByFingerTime;
+	bool m_Saved;
 
 	enum State { Falling = 0, Heating, BlowingUp };
 	State m_State;
@@ -29,6 +30,10 @@ public class FallingBomb : MonoBehaviour {
 			// start moving by finger
 			m_IsMovingByFinger = true;
 			m_LastMovingByFingerTime = Time.time;
+			if (!m_Saved) {
+				LevelController.control.m_PointKeeper.AddBombSaved();
+				m_Saved = true;
+			}
 		}
 	}
 
@@ -40,6 +45,7 @@ public class FallingBomb : MonoBehaviour {
 	void Start () {
 		m_IsMovingByFinger = false;
 		m_State = State.Falling;
+		m_Saved = false;
 	}
 
 	void FixedUpdate () {

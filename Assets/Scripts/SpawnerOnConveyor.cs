@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-enum SpawnObjectType { Piano = 0, Samovar, Cupboard, Last /*should be last*/ };
+public enum SpawnObjectType { Piano = 0, Samovar, Cupboard, Vase, Last /*should be last*/ };
 
 class SpawnObjectsInfo {
 	public SpawnObjectsInfo(SpawnObjectType type) {
@@ -22,6 +22,12 @@ class SpawnObjectsInfo {
 			m_Chance = 0.1f;
 			m_Mass = 10.0f;
 			m_SpriteName = "coin3";
+			break;
+		case SpawnObjectType.Vase:
+//			m_Chance = 0.02f;
+			m_Chance = 2.0f;
+			m_Mass = 6.0f;
+			m_SpriteName = "vase1";
 			break;
 		default:
 			Debug.LogWarning("wrong type");
@@ -77,6 +83,7 @@ public class SpawnerOnConveyor {
 			// select object
 
 			SpawnObjectType obj_type = GetObjectType(is_right);
+			falling_obj.SetType(obj_type);
 			SpawnObjectsInfo obj_info = m_SpawnObjects[obj_type];
 
 			go.rigidbody2D.mass = obj_info.m_Mass;

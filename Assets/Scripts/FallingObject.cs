@@ -21,6 +21,13 @@ public class FallingObject : MonoBehaviour {
 	float m_ChewingStartPos;
 	float m_ChewingAngle;
 	Quaternion m_ChewingStartRot;
+	SpawnObjectType m_Type;
+
+	// For vase
+	bool m_IsMovingByFinger;
+	Vector3 m_FingerSpeed;
+	float m_LastMovingByFingerTime;
+	bool m_SavedForHistory;
 
 	public bool TryToChew(GameObject chew_by) {
 		if (m_State != FOState.InConveyor)
@@ -122,6 +129,39 @@ public class FallingObject : MonoBehaviour {
 		SelfDestroy();
 	}
 
+	public void SetType(SpawnObjectType type) {
+		m_Type = type;
+		if (m_Type == SpawnObjectType.Vase) {
+			InitVase();
+		}
+	}
+
+	public void MoveByFinger(Vector3 delta_p) {
+		print("MovingByFinger");
+		if (m_IsMovingByFinger) {
+			Vector3 speed = delta_p / (Time.time - m_LastMovingByFingerTime);
+			rigidbody2D.velocity = speed;
+			rigidbody2D.isKinematic = false; // If isKinematic is enabled, Forces, collisions or joints will not affect the rigidbody anymore
+			m_LastMovingByFingerTime = Time.time;
+		} else {
+			// start moving by finger
+			m_IsMovingByFinger = true;
+			m_LastMovingByFingerTime = Time.time;
+			if (!m_SavedForHistory) {
+				LevelController.control.m_PointKeeper.AddVaseSaved();
+				m_SavedForHistory = true;
+
+				// Unlink object from conveyor
+				LevelController.control.m_RightConveyor.UnlinkObject(this);
+				LevelController.control.m_LeftConveyor.UnlinkObject(this);
+			}
+		}
+	}
+	public void EndMovingByFinger() {
+		m_IsMovingByFinger = false;
+		rigidbody2D.velocity = Vector3.zero;
+	}
+
 	// Private functions ---------------------------------
 
 	void FixedUpdate () {
@@ -170,5 +210,13 @@ public class FallingObject : MonoBehaviour {
 		if (progress_and_back > 1.0f)
 			progress_and_back = 2.0f - progress_and_back;
 		return progress_and_back;
+	}
+
+	void InitVase() {
+		LevelController.control.m_PointKeeper.AddVase();
+		gameObject.tag = "Vase";
+		gameObject.layer = LayerMask.NameToLayer("MovingByFingerObjects");
+		m_IsMovingByFinger = false;
+		m_SavedForHistory = false;
 	}
 }
