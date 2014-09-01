@@ -52,8 +52,8 @@ public class ObjectConveyor {
 		m_Scroll = delta;
 	}
 
-	public void UnlinkObject(FallingObject fo) {
-		m_Objects.Remove(fo);
+	public bool UnlinkObject(FallingObject fo) {
+		return m_Objects.Remove(fo);
 	}
 
 	public void AddObject(FallingObject falling_obj) {

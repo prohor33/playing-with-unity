@@ -73,10 +73,10 @@ public class InputController {
 			                                     10.0f, 1 << LayerMask.NameToLayer("MovingByFingerObjects"));
 			if (hit.collider != null) { 
 				m_PickedObject = hit.transform;
-				Debug.Log("catch object" + m_PickedObject.gameObject.name);
+//				Debug.Log("catch object" + m_PickedObject.gameObject.name);
 			} else {
 				m_PickedObject = null;
-				Debug.Log("no object");
+//				Debug.Log("no object");
 				return false;
 			}
 			return true;
@@ -92,7 +92,6 @@ public class InputController {
 				FallingBomb fb = Utils.GetTheClassFromGO<FallingBomb>(m_PickedObject.gameObject);
 				fb.MoveByFinger(world_delta_3d);
 			} else if (m_PickedObject.gameObject.tag == "Vase") {
-				Debug.Log("Move vase");
 				FallingObject fo = Utils.GetTheClassFromGO<FallingObject>(m_PickedObject.gameObject);
 				fo.MoveByFinger(world_delta_3d);
 			}

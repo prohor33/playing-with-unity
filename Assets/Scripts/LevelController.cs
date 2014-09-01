@@ -5,6 +5,7 @@ public class LevelController : MonoBehaviour {
 	
 	public GameObject m_GameOverText;
 	public GameObject m_Monster;
+	public MonsterController m_MonsterContr;
 	public GameObject m_FallingObject;	
 	public GameObject m_FPSText;
 	public int m_Level = 1;
@@ -20,7 +21,6 @@ public class LevelController : MonoBehaviour {
 
 	enum GameState {GameFinished, Game};
 	GameState m_GameState;
-	MonsterController m_MonsterContr;
 	Spawner m_Spawner = new Spawner();
 	float m_LevelStartTime;
 
@@ -43,6 +43,7 @@ public class LevelController : MonoBehaviour {
 		m_MonsterContr.Restart();
 		InitConveyoers();
 		InitSpawner();
+//		GameOver();
 	}
 
 	public ObjectConveyor GetConveyor(bool right) {

@@ -1,12 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class FallingBomb : MonoBehaviour {
-
-	bool m_IsMovingByFinger;
-	Vector3 m_FingerSpeed;
-	float m_LastMovingByFingerTime;
-	bool m_Saved;
+public class FallingBomb : TouchedByFinger {
 
 	enum State { Falling = 0, Heating, BlowingUp };
 	State m_State;
@@ -20,32 +15,8 @@ public class FallingBomb : MonoBehaviour {
 		StartCoroutine(HeatingUp(heat_up_time));
 	}
 
-	public void MoveByFinger(Vector3 delta_p) {
-		if (m_IsMovingByFinger) {
-			Vector3 speed = delta_p / (Time.time - m_LastMovingByFingerTime);
-			rigidbody2D.velocity = speed;
-			rigidbody2D.isKinematic = false; // If isKinematic is enabled, Forces, collisions or joints will not affect the rigidbody anymore
-			m_LastMovingByFingerTime = Time.time;
-		} else {
-			// start moving by finger
-			m_IsMovingByFinger = true;
-			m_LastMovingByFingerTime = Time.time;
-			if (!m_Saved) {
-				LevelController.control.m_PointKeeper.AddBombSaved();
-				m_Saved = true;
-			}
-		}
-	}
-
-	public void EndMovingByFinger() {
-		m_IsMovingByFinger = false;
-		rigidbody2D.velocity = Vector3.zero;
-	}
-
 	void Start () {
-		m_IsMovingByFinger = false;
 		m_State = State.Falling;
-		m_Saved = false;
 	}
 
 	void FixedUpdate () {
@@ -75,6 +46,13 @@ public class FallingBomb : MonoBehaviour {
 		float scale = Mathf.Lerp(start_scale, end_scale, progress);
 		GameObject vfx_go = Utils.GetChildGO(gameObject, "VFX");
 		vfx_go.transform.localScale = Vector3.one * scale;
+	}
+
+	protected override void TouchFirstTime() {
+		LevelController.control.m_PointKeeper.AddBombSaved();
+	}
+	protected override bool IsTouchable() {
+		return true;  // always touchable
 	}
 
 	// IEnumerators ----------------------------------

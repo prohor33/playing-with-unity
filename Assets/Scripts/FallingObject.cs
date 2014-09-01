@@ -7,7 +7,7 @@ using System.Collections;
 //	public int a;
 //}
 
-public class FallingObject : MonoBehaviour {
+public class FallingObject : TouchedByFinger {
 	
 	public float m_OrdinaryRotationSpeed;
 	
@@ -22,12 +22,6 @@ public class FallingObject : MonoBehaviour {
 	float m_ChewingAngle;
 	Quaternion m_ChewingStartRot;
 	SpawnObjectType m_Type;
-
-	// For vase
-	bool m_IsMovingByFinger;
-	Vector3 m_FingerSpeed;
-	float m_LastMovingByFingerTime;
-	bool m_SavedForHistory;
 
 	public bool TryToChew(GameObject chew_by) {
 		if (m_State != FOState.InConveyor)
@@ -136,32 +130,6 @@ public class FallingObject : MonoBehaviour {
 		}
 	}
 
-	public void MoveByFinger(Vector3 delta_p) {
-		print("MovingByFinger");
-		if (m_IsMovingByFinger) {
-			Vector3 speed = delta_p / (Time.time - m_LastMovingByFingerTime);
-			rigidbody2D.velocity = speed;
-			rigidbody2D.isKinematic = false; // If isKinematic is enabled, Forces, collisions or joints will not affect the rigidbody anymore
-			m_LastMovingByFingerTime = Time.time;
-		} else {
-			// start moving by finger
-			m_IsMovingByFinger = true;
-			m_LastMovingByFingerTime = Time.time;
-			if (!m_SavedForHistory) {
-				LevelController.control.m_PointKeeper.AddVaseSaved();
-				m_SavedForHistory = true;
-
-				// Unlink object from conveyor
-				LevelController.control.m_RightConveyor.UnlinkObject(this);
-				LevelController.control.m_LeftConveyor.UnlinkObject(this);
-			}
-		}
-	}
-	public void EndMovingByFinger() {
-		m_IsMovingByFinger = false;
-		rigidbody2D.velocity = Vector3.zero;
-	}
-
 	// Private functions ---------------------------------
 
 	void FixedUpdate () {
@@ -180,14 +148,25 @@ public class FallingObject : MonoBehaviour {
 	void Update() {}
 
 	void Start() {
+		Init();
+	}
+
+	void Init() {
 		m_RotationSpeed = m_OrdinaryRotationSpeed;
 		m_State = FOState.InConveyor;
 		SetSpeed(m_FallingSpeed);
-
+		
 		GUIText guiText = GetComponentInChildren(typeof(GUIText)) as GUIText;
 		guiText.anchor = TextAnchor.MiddleCenter;
 		guiText.fontSize = 30;
 		SetText(((int)rigidbody2D.mass).ToString());
+	}
+
+	void ManageColliderSize() {
+		BoxCollider2D bc = Utils.GetTheClassFromGO<BoxCollider2D>(gameObject);
+		SpriteRenderer sr = Utils.GetTheClassFromGO<SpriteRenderer>(gameObject);
+		// TODO: remove the hardcode!
+		bc.size = new Vector2(1.8f, 4.8f);
 	}
 
 	void SelfDestroy() {
@@ -215,8 +194,28 @@ public class FallingObject : MonoBehaviour {
 	void InitVase() {
 		LevelController.control.m_PointKeeper.AddVase();
 		gameObject.tag = "Vase";
+		gameObject.name = "FallingVase";
 		gameObject.layer = LayerMask.NameToLayer("MovingByFingerObjects");
-		m_IsMovingByFinger = false;
-		m_SavedForHistory = false;
+		ManageColliderSize();
+	}
+
+	bool UnlinkFromConveyor() {
+		// Unlink object from conveyor
+		return LevelController.control.m_RightConveyor.UnlinkObject(this) ||
+		LevelController.control.m_LeftConveyor.UnlinkObject(this);
+	}
+
+	bool UnlinkFromHead() {
+		return LevelController.control.m_MonsterContr.m_LeftHeadContr.UnlinkObject(this) ||
+		LevelController.control.m_MonsterContr.m_RightHeadContr.UnlinkObject(this);
+	}
+
+	protected override void TouchFirstTime() {
+		LevelController.control.m_PointKeeper.AddVaseSaved();
+		bool unlink_ok = UnlinkFromConveyor() || UnlinkFromHead();
+		print("unlink_ok = " + unlink_ok);
+	}
+	protected override bool IsTouchable() {
+		return m_State != FOState.InConveyor;			
 	}
 }

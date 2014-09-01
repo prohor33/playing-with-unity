@@ -81,11 +81,11 @@ public class PointKeeper {
 		if (star_numb > 2 || star_numb < 0)
 			return "";
 		string[] spr_names = new string[3] { "star_empty", "star_half", "star_full" };
-		bool draw_full = m_Points >= m_StarPoints[star_numb];
+		bool draw_full = Points >= m_StarPoints[star_numb];
 		if (draw_full)
 			return spr_names[2];
 		int prev_point = star_numb >= 1 ? m_StarPoints[star_numb - 1] : 0;
-		bool draw_half = m_Points >= (prev_point + (m_StarPoints[star_numb] - prev_point) / 2);
+		bool draw_half = Points >= (prev_point + (m_StarPoints[star_numb] - prev_point) / 2);
 		if (draw_half)
 			return spr_names[1];
 		return spr_names[0];

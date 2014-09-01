@@ -115,6 +115,10 @@ public class HeadController : MonoBehaviour {
 		}
 	}
 
+	public bool UnlinkObject(FallingObject fo) {
+		return m_ChewingObjects.Remove(fo);
+	}
+
 	// Private functions ---------------------------------------
 
 	// Use this for initialization
