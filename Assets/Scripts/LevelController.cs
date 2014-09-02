@@ -26,7 +26,7 @@ public class LevelController : MonoBehaviour {
 
 	public void GameOver() {
 		GameContr.control.PassLevel();
-//		SetGameOverText("You Won!");
+		SetGameOverText("You Won!");
 		m_GameState = GameState.GameFinished;
 
 		float time_gone = Time.time - m_LevelStartTime;
