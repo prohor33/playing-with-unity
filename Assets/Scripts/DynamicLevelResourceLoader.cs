@@ -24,7 +24,7 @@ public class DynamicLevelResourceLoader : MonoBehaviour {
 		}
 		
 		SpriteRenderer sprite_rend = obj.GetComponentInChildren(typeof(SpriteRenderer)) as SpriteRenderer;
-		string sprite_name = GameContr.control.lvl_settings.m_BackgroundSpriteNames[level];
+		string sprite_name = LevelsSettings.m_BackgroundSpriteNames[level];
 		Sprite sprite = Resources.Load<Sprite>(sprite_name);
 		if (!sprite)
 			Debug.LogWarning("Can't load " + sprite_name);

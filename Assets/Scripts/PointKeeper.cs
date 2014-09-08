@@ -13,11 +13,14 @@ public class PointKeeper {
 		m_VaseSaved = 0;
 		m_VaseWas = 0;
 		m_TimeGone = 0;
+
+		m_StarPoints = LevelsSettings.GetStarPoints();
+		m_MaxTime = LevelsSettings.GetMaxTime();
 	}
 	
 	// set from level settings
-	private int[] m_StarPoints = new int[3] { 100, 200, 300 };
-	private int m_MaxTime = 100;
+	private int[] m_StarPoints;
+	private int m_MaxTime;
 	
 	private int m_Points;
 	private int m_BombsSaved;
@@ -28,7 +31,7 @@ public class PointKeeper {
 	
 	public int Points {
 		get {
-			const float point_for_second = 0.2f;
+			const float point_for_second = 3.0f;
 			const float point_for_bomb = 5.0f;
 			const float point_for_vase = 20.0f;
 			int  bonus_time = m_MaxTime - m_TimeGone;

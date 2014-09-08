@@ -95,7 +95,7 @@ public class MonsterController : MonoBehaviour {
 	}
 
 	void DestroyTheMonster() {
-		if (!IsHeadsOk())
+		if (!IsHeadsOk() || m_State == MonsterState.Destroyed)
 			return;
 		Debug.Log("DestroyTheMonster");
 		m_LvlController.GameOver();

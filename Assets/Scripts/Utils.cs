@@ -59,6 +59,7 @@ public class Utils {
 			Debug.LogError("Can't find SpriteRenderer");
 		}
 		sr.sprite = sprite;
+		sr.enabled = true;
 		return go;
 	}
 

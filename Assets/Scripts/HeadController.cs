@@ -131,7 +131,7 @@ public class HeadController : MonoBehaviour {
 		guiText.anchor = TextAnchor.MiddleCenter;
 		guiText.fontSize = 30;
 
-		m_EatMassPerSecond = GameContr.control.lvl_settings.GetHeadEatMassPerSec();
+		m_EatMassPerSecond = LevelsSettings.GetHeadEatMassPerSec();
 	}
 	
 	// Update is called once per frame

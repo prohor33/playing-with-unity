@@ -15,9 +15,9 @@ public class LevelController : MonoBehaviour {
 
 	public const float m_MaxCameraPosition = 20.0f;
 
-	public PointKeeper m_PointKeeper = new PointKeeper();
-	public ObjectConveyor m_LeftConveyor = new ObjectConveyor(false);
-	public ObjectConveyor m_RightConveyor  = new ObjectConveyor(true);
+	public PointKeeper m_PointKeeper;
+	public ObjectConveyor m_LeftConveyor;
+	public ObjectConveyor m_RightConveyor;
 
 	enum GameState {GameFinished, Game};
 	GameState m_GameState;
@@ -26,7 +26,7 @@ public class LevelController : MonoBehaviour {
 
 	public void GameOver() {
 		GameContr.control.PassLevel();
-		SetGameOverText("You Won!");
+//		SetGameOverText("You Won!");
 		m_GameState = GameState.GameFinished;
 
 		float time_gone = Time.time - m_LevelStartTime;
@@ -38,15 +38,11 @@ public class LevelController : MonoBehaviour {
 		StartLevelResultsDialog();
 	}
 
-	public void StartNewGame() {
-		m_MonsterContr = (MonsterController)m_Monster.GetComponent(typeof(MonsterController));
-		SetGameOverText("");
-		m_GameState = GameState.Game;
-		m_LevelStartTime = Time.time;
-		m_MonsterContr.Restart();
-		InitConveyoers();
-		InitSpawner();
-//		GameOver();
+	public void RestartGame() {
+		m_LeftConveyor.DestroyFallingObjects();
+		m_RightConveyor.DestroyFallingObjects();
+
+		StartNewGame();
 	}
 
 	public ObjectConveyor GetConveyor(bool right) {
@@ -61,6 +57,22 @@ public class LevelController : MonoBehaviour {
 	}
 
 	// Private members --------------------------
+
+	void Init() {
+		m_PointKeeper = new PointKeeper();
+	}
+
+	void StartNewGame() {
+		m_MonsterContr = (MonsterController)m_Monster.GetComponent(typeof(MonsterController));
+		SetGameOverText("");
+		m_GameState = GameState.Game;
+		m_LevelStartTime = Time.time;
+		m_MonsterContr.Restart();
+		InitConveyoers();
+		InitSpawner();
+		Init();
+//		GameOver();
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -95,7 +107,7 @@ public class LevelController : MonoBehaviour {
 		Rect re_btn_rect = new Rect(menu_btn_shift,
 		                         menu_btn_pos.y, menu_btn_size.x, menu_btn_size.y);
 		if(GUI.Button(re_btn_rect, m_RestartIcon)) {
-			StartNewGame();
+			RestartGame();
 		}
 	}
 
@@ -118,6 +130,8 @@ public class LevelController : MonoBehaviour {
 	}
 
 	void InitConveyoers() {
+		m_LeftConveyor = new ObjectConveyor(false);
+		m_RightConveyor  = new ObjectConveyor(true);
 		m_LeftConveyor.m_LevelContr = this;
 		m_LeftConveyor.Restart();
 		m_RightConveyor.m_LevelContr = this;
@@ -131,7 +145,7 @@ public class LevelController : MonoBehaviour {
 
 	void HandleInput() {
 		if (Input.GetKey(KeyCode.N)) {
-			StartNewGame();
+			RestartGame();
 		}
 		if (Input.GetKey(KeyCode.G)) {
 			GameOver();

@@ -18,7 +18,7 @@ public class Spawner {
 
 	void UdateFireball() {
 		m_FireballSpawnDeltaTime += Time.fixedDeltaTime;
-		if (m_FireballSpawnDeltaTime > GameContr.control.lvl_settings.GetDeltaFireballTime()) {
+		if (m_FireballSpawnDeltaTime > LevelsSettings.GetDeltaFireballTime()) {
 			m_FireballSpawnDeltaTime = 0.0f;
 			SpawnFireball();
 		}

@@ -11,6 +11,7 @@ class SpawnObjectsInfo {
 		case SpawnObjectType.Samovar:
 			m_Chance = 1.0f;
 			m_Mass = 3.0f;
+//			m_Mass = 30.0f;
 			m_SpriteName = "coin1";
 			break;
 		case SpawnObjectType.Cupboard:
@@ -24,8 +25,8 @@ class SpawnObjectsInfo {
 			m_SpriteName = "coin3";
 			break;
 		case SpawnObjectType.Vase:
-//			m_Chance = 0.02f;
-			m_Chance = 2.0f;
+			m_Chance = 0.06f * LevelsSettings.GetVaseFallingAccelerationCoef();
+//			m_Chance = 2.0f;
 			m_Mass = 6.0f;
 			m_SpriteName = "vase1";
 			break;
@@ -108,7 +109,7 @@ public class SpawnerOnConveyor {
 		for (int i = 0; i < (int)SpawnObjectType.Last; i++)
 			m_SpawnObjects[(SpawnObjectType)i] = new SpawnObjectsInfo((SpawnObjectType)i);
 
-		m_DeltaSpawnMove = GameContr.control.lvl_settings.GetDeltaSpawnMove();
+		m_DeltaSpawnMove = LevelsSettings.GetDeltaSpawnMove();
 		m_LeftOrRightPrivilege = 0.0f;
 		m_PrivilegeChangingTrand = true;
 	}

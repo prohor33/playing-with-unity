@@ -24,6 +24,7 @@ public class LevelResultsDialog : MonoBehaviour {
 	}
 
 	void Start () {
+		print("Init");
 		StartCoroutine(DecreasePassed(0.5f));
 	}
 
@@ -32,6 +33,7 @@ public class LevelResultsDialog : MonoBehaviour {
 	}
 
 	void Awake() {
+		print("LevelResultsDialog Awake");
 		LoadResources();
 		Init();
 	}
@@ -41,11 +43,13 @@ public class LevelResultsDialog : MonoBehaviour {
 		InitGUIPos();
 
 		SpriteRenderer sr = Utils.GetTheClassFromGO<SpriteRenderer>(gameObject);
-		sr.enabled = true;
+		sr.enabled = false;
 
 		m_PassedGO = Utils.GetChildGO(gameObject, "Passed");
 
 		UpdateData();
+
+		sr.enabled = true;
 	}
 
 	void InitGUIPos() {
@@ -177,7 +181,7 @@ public class LevelResultsDialog : MonoBehaviour {
 		// Restart button
 		if(GUI.Button(re_btn_rect, m_RestartIcon)) {
 			Finish();
-			LevelController.control.StartNewGame();
+			LevelController.control.RestartGame();
 		}
 	}
 
