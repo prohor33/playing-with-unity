@@ -31,6 +31,9 @@ public class LevelController : MonoBehaviour {
 
 		float time_gone = Time.time - m_LevelStartTime;
 		LevelController.control.m_PointKeeper.SetTimeGone((int)time_gone);
+
+		m_LeftConveyor.DestroyFallingObjects();
+		m_RightConveyor.DestroyFallingObjects();
 		
 		StartLevelResultsDialog();
 	}

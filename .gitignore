@@ -1,11 +1,8 @@
-# project files
-*.csproj
-*.sln
-*.userprefs
+# Ignore everything
+*
 
-# directories
-Temp/
-Library/
-ProjectSettings/
+# Except
+!.gitignore
+!/Assets/Scripts/
 
 *AnimationSample.cs*

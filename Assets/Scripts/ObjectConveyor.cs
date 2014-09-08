@@ -60,14 +60,7 @@ public class ObjectConveyor {
 		m_Objects.Add(falling_obj);
 	}
 
-	// Private members ------------------------------
-
-	void Spawn() {
-		if (m_SpawnContr.Spawn(m_DeltaSpawnMove, m_IsRight))
-			m_DeltaSpawnMove = 0.0f;
-	}
-
-	void DestroyFallingObjects() {
+	public void DestroyFallingObjects() {
 		foreach (FallingObject fo in m_Objects)	{
 			if (fo == null)
 				continue;
@@ -75,6 +68,13 @@ public class ObjectConveyor {
 			MonoBehaviour.Destroy(fo);
 		}
 		m_Objects.Clear();
+	}
+
+	// Private members ------------------------------
+
+	void Spawn() {
+		if (m_SpawnContr.Spawn(m_DeltaSpawnMove, m_IsRight))
+			m_DeltaSpawnMove = 0.0f;
 	}
 
 	void MakeScroll() {
