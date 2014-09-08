@@ -66,6 +66,13 @@ public class MonsterController : MonoBehaviour {
 		    IsHeadsOk()) {
 			DestroyTheMonster();
 		}
+
+		// Update heads progresess
+		float max_up_p = 2.0f;
+		float left_head_progress = (left_head_p - (m_LeftHeadContr.GetMinPos() + delta_min)) / max_up_p;
+		float right_head_progress = (right_head_p - (m_RightHeadContr.GetMinPos() + delta_min)) / max_up_p;
+		m_LeftHeadContr.UpdateHealth(left_head_progress);
+		m_RightHeadContr.UpdateHealth(right_head_progress);
 	}
 
 	void SetTarget(float y) {

@@ -28,13 +28,16 @@ public class HeadController : MonoBehaviour {
 	float m_EatMassPerSecond;
 	float m_BackoffY;	// When the head get kicked it's pull out a little bit
 	Animator m_Animator;
+
+	Rect m_ProgressRect;
+	Color m_ProgressColor;
 	
 	public void Restart() {
 		m_MonsterContr = (MonsterController)m_Monster.GetComponent(typeof(MonsterController));
 		m_State = HeadState.Stationary;
 		DestroyChewingObjects();
-		transform.localPosition = new Vector3(m_IsRightHead ? m_StartPosX : -m_StartPosX, m_StartPosY, 0.0f);
 
+		Init();
 		RestartPhysics();
 	}
 
@@ -119,9 +122,16 @@ public class HeadController : MonoBehaviour {
 		return m_ChewingObjects.Remove(fo);
 	}
 
-	// Private functions ---------------------------------------
+	public void UpdateHealth(float progress) {
+		int max_size = (int)(Screen.height * 2.0f / 3.0f);
+		int min_size = 0;
+		int size = (int)Mathf.Lerp(min_size, max_size, 1.0f - progress);
+		m_ProgressRect.yMin = m_ProgressRect.yMax - size;
+		m_ProgressColor = Color.Lerp(Color.red, Color.green, 1.0f - progress);
+	}
 
-	// Use this for initialization
+	// Private functions ---------------------------------------
+	
 	void Start () {
 		m_Animator = (Animator)gameObject.GetComponentInChildren(typeof(Animator));
 
@@ -133,8 +143,15 @@ public class HeadController : MonoBehaviour {
 
 		m_EatMassPerSecond = LevelsSettings.GetHeadEatMassPerSec();
 	}
-	
-	// Update is called once per frame
+
+	void Init() {
+		transform.localPosition = new Vector3(m_IsRightHead ? m_StartPosX : -m_StartPosX, m_StartPosY, 0.0f);
+		int progress_p_shift = 5;
+		int progress_width = 10;
+		int progress_p_x = !m_IsRightHead ? progress_p_shift : Screen.width - progress_p_shift - progress_width;
+		m_ProgressRect = new Rect(progress_p_x, Screen.height - 25, progress_width, 0);
+	}
+
 	void Update () {
 		if (Input.GetKey(KeyCode.F)) {
 			FallChewingObjects();
@@ -342,6 +359,10 @@ public class HeadController : MonoBehaviour {
 
 	void UpdateAnimation() {
 		m_Animator.SetInteger("m_IsChewing", (m_State == HeadState.Chewing) ? 1 : 0);
+	}
+
+	void OnGUI() {
+		GUIUtils.DrawRect(m_ProgressRect, m_ProgressColor);
 	}
 
 	// IEnumerators ----------------------------------
