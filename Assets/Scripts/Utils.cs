@@ -5,7 +5,7 @@ public class Utils {
 
 	public static int menu_level = 0;
 	public static int king_level = 1;
-	public static int level_select_level = 2;
+	public static int dungeon_level = 2;
 	public static int monster_level = 3;
 
 	public static Sprite LoadSprite(string spr_name) {

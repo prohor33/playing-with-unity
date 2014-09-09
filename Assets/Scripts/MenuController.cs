@@ -11,7 +11,10 @@ public class MenuController : MonoBehaviour {
 		                        Screen.height / 2 - (btn_size.y + (btn_number - 1) * btn_vert_shift) / 2 , btn_size.x, btn_size.y);
 
 		if(GUI.Button(btn_pos, "Play")) {
-			Application.LoadLevel(Utils.king_level);
+			if (StatisticKeeper.m_AlreadySawKingScene)
+				Application.LoadLevel(Utils.dungeon_level);
+			else
+				Application.LoadLevel(Utils.king_level);
 		}
 
 		RectOffset btn_shift = new RectOffset(0, 0, -btn_vert_shift, btn_vert_shift);

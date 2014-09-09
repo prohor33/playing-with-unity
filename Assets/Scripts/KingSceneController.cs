@@ -151,10 +151,11 @@ public class KingSceneController : MonoBehaviour {
 //		const float go_out_time = 5.0f;
 		const float go_out_time = 1.0f; // for debug
 		Invoke("GoToLevels", go_out_time);
+		StatisticKeeper.m_AlreadySawKingScene = true;
 	}
 
 	void GoToLevels() {
-		Application.LoadLevel(Utils.level_select_level);
+		Application.LoadLevel(Utils.dungeon_level);
 	}
 
 	void LoadKingSceneBackground() {

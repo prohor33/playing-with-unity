@@ -15,8 +15,7 @@ public class SaveLoad {
 
 		bf.Serialize(file, m_Version);
 
-		SerializeGameController(ref bf, ref file, m_Version, true);
-		SerializeDungeonSceneController(ref bf, ref file, m_Version, true);
+		Serialize(ref bf, ref file, m_Version, true);
 
 		file.Close();
 	}
@@ -33,6 +32,8 @@ public class SaveLoad {
 		GameContr.control.ResetSavingData();
 
 		Hero.m_CurrT = 0.0f;
+
+		StatisticKeeper.m_AlreadySawKingScene = false;
 	}
 
 	// private members -------------------------------
@@ -59,10 +60,15 @@ public class SaveLoad {
 		if (version < m_Version)
 			Debug.LogWarning("Loading old version file");
 		
-		SerializeGameController(ref bf, ref file, version, false);
-		SerializeDungeonSceneController(ref bf, ref file, version, false);
+		Serialize(ref bf, ref file, version, false);
 		
 		file.Close();
+	}
+
+	static void Serialize(ref BinaryFormatter bf, ref FileStream file, int version, bool save) {
+		SerializeGameController(ref bf, ref file, version, save);
+		SerializeDungeonSceneController(ref bf, ref file, version, save);
+		SerializeStatisticKeeper(ref bf, ref file, version, save);
 	}
 
 	static void SerializeGameController(ref BinaryFormatter bf, ref FileStream file, int version, bool save) {
@@ -84,6 +90,14 @@ public class SaveLoad {
 		}
 	}
 
+	static void SerializeStatisticKeeper(ref BinaryFormatter bf, ref FileStream file, int version, bool save) {
+		
+		if (save) {
+			bf.Serialize(file, StatisticKeeper.m_AlreadySawKingScene);
+		} else {
+			StatisticKeeper.m_AlreadySawKingScene = (bool)bf.Deserialize(file);
+		}
+	}
 
 }
 

@@ -172,7 +172,7 @@ public class LevelResultsDialog : MonoBehaviour {
 		// Next button
 		if(GUI.Button(menu_btn_rect, m_NextIcon)) {
 			Finish();
-			Application.LoadLevel(Utils.level_select_level);
+			Application.LoadLevel(Utils.dungeon_level);
 		}
 		
 		Rect re_btn_rect = new Rect(m_RestartButtonsP.x,
