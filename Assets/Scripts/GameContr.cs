@@ -58,9 +58,9 @@ public class GameContr : MonoBehaviour {
 	}
 
 	void OnEnable() {
-//		SaveLoad.Load();
+		SaveLoad.Load();
 		// or
-		ResetSavingData();
+//		SaveLoad.ResetAllData();
 	}
 
 	void OnDisable() {

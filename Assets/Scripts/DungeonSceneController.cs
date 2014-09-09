@@ -27,15 +27,6 @@ public class DungeonSceneController : MonoBehaviour {
 	void Update () {
 		HandleInputs();
 	}
-	
-	void OnGUI () {
-		Rect btn_back_pos = new Rect(0.0f, 0.0f, Screen.width / 3, Screen.width / 10);
-		RectOffset btn_back_offset = new RectOffset((int)-Screen.width / 10, (int)Screen.width / 10, (int)-Screen.height / 40, (int)Screen.height / 40);
-		btn_back_pos = btn_back_offset.Add(btn_back_pos);
-		if(GUI.Button(btn_back_pos, "Back to menu", m_BackButtonSkin.button)) {
-			Application.LoadLevel(Utils.menu_level);
-		}
-	}
 
 	void LoadLevelsDoors() {
 
@@ -131,6 +122,15 @@ public class DungeonSceneController : MonoBehaviour {
 		Touch touch = Input.GetTouch(0);
 		Vector2 pos = touch.position;
 		m_Hero.SetTarget(Camera.main.ScreenToWorldPoint(pos));
+	}
+
+	void OnGUI () {
+		Rect btn_back_pos = new Rect(0.0f, 0.0f, Screen.width / 3, Screen.width / 10);
+		RectOffset btn_back_offset = new RectOffset((int)-Screen.width / 10, (int)Screen.width / 10, (int)-Screen.height / 40, (int)Screen.height / 40);
+		btn_back_pos = btn_back_offset.Add(btn_back_pos);
+		if(GUI.Button(btn_back_pos, "Back to menu", m_BackButtonSkin.button)) {
+			Application.LoadLevel(Utils.menu_level);
+		}
 	}
 }
 

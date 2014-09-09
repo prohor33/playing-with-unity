@@ -22,7 +22,7 @@ public class MenuController : MonoBehaviour {
 
 		btn_pos = btn_shift.Add(btn_pos);
 		if(GUI.Button(btn_pos, "Reset All The Data")) {
-			GameContr.control.ResetSavingData();
+			SaveLoad.ResetAllData();
 			Debug.Log("The data have been reset");
 		}
 

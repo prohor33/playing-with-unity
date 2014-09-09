@@ -8,7 +8,9 @@ public class Hero : MonoBehaviour {
 	DungeonSceneController m_LevelsSceneController;
 	List<Vector3> m_Path = new List<Vector3>();
 
-	float m_CurrT;
+	// Load/Save Data
+	public static float m_CurrT = -1.0f;
+
 	float m_TargetT;
 	bool m_NeedToStopCurrTarget;
 
@@ -17,10 +19,12 @@ public class Hero : MonoBehaviour {
 	enum Direction { NoDirection = -2, Stationary = -1, Up = 0, Right = 1, Down = 2, Left = 3 };
 	Direction m_Direction;
 	Direction m_OldDirection;
+	bool m_AlreadyMoved;
 
 	public void Init(float scale, Vector3 pos, DungeonSceneController levels_scene_controller) {
 		InitPath(scale, pos);
-		m_CurrT = 0.0f;
+		if (m_CurrT < 0.0f)
+			m_CurrT = 0.0f;
 		m_TargetT = -1.0f; // there is no target
 		m_State = HeroState.Stationary;
 		m_NeedToStopCurrTarget = false;
@@ -28,9 +32,11 @@ public class Hero : MonoBehaviour {
 		m_OldDirection = Direction.Stationary;
 		m_LevelsSceneController = levels_scene_controller;
 		gameObject.transform.localPosition = GetPosFromTrajectory(m_CurrT);
+		m_AlreadyMoved = false;
 	}
 
 	public void SetTarget(Vector3 p) {
+		m_AlreadyMoved = true;
 
 		float min_dist = 1000.0f;
 		float min_t = -1.0f;
@@ -186,7 +192,7 @@ public class Hero : MonoBehaviour {
 	void CheckForLevelPassingBy() {
 		if (!m_LevelsSceneController)
 			return;
-		if (m_State != HeroState.Stationary)
+		if (m_State != HeroState.Stationary || !m_AlreadyMoved)
 			return;
 		Vector3[] levels_doors_pos;
 		m_LevelsSceneController.GetLevelDoorsPos(out levels_doors_pos);
