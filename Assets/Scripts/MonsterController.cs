@@ -14,7 +14,7 @@ public class MonsterController : MonoBehaviour {
 	const float m_StartPosY = 2.5f;
 	float m_MassEaten = 0.0f;
 
-	enum MonsterState {Destroyed, Normal, AttackingTheCake};
+	enum MonsterState {Destroyed, Normal};
 	MonsterState m_State;
 
 	public void Restart() {
@@ -68,11 +68,11 @@ public class MonsterController : MonoBehaviour {
 		}
 
 		// Update heads progresess
-		float max_up_p = 2.0f;
-		float left_head_progress = (left_head_p - (m_LeftHeadContr.GetMinPos() + delta_min)) / max_up_p;
-		float right_head_progress = (right_head_p - (m_RightHeadContr.GetMinPos() + delta_min)) / max_up_p;
-		m_LeftHeadContr.UpdateHealth(left_head_progress);
-		m_RightHeadContr.UpdateHealth(right_head_progress);
+		float max_up_p = 1.5f;
+		float left_head_progress = 1.0f - (left_head_p - (m_LeftHeadContr.GetMinPos() + delta_min)) / max_up_p;
+		float right_head_progress = 1.0f - (right_head_p - (m_RightHeadContr.GetMinPos() + delta_min)) / max_up_p;
+		m_LeftHeadContr.UpdateKillProgress(left_head_progress);
+		m_RightHeadContr.UpdateKillProgress(right_head_progress);
 	}
 
 	void SetTarget(float y) {

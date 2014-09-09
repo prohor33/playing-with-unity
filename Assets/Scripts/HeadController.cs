@@ -17,7 +17,7 @@ public class HeadController : MonoBehaviour {
 	const float m_MinPosY = 1.5f;
 	const float m_MaxPosY = 4.0f;
 
-	public enum HeadState {Falling, Stationary, Chewing, AttackingTheCake, Destroyed};
+	public enum HeadState {Falling, Stationary, Chewing, Destroyed};
 	HeadState m_State;
 
 	float m_V;	// Velocity
@@ -122,12 +122,12 @@ public class HeadController : MonoBehaviour {
 		return m_ChewingObjects.Remove(fo);
 	}
 
-	public void UpdateHealth(float progress) {
+	public void UpdateKillProgress(float progress) {
 		int max_size = (int)(Screen.height * 2.0f / 3.0f);
 		int min_size = 0;
-		int size = (int)Mathf.Lerp(min_size, max_size, 1.0f - progress);
+		int size = (int)Mathf.Lerp(min_size, max_size, progress);
 		m_ProgressRect.yMin = m_ProgressRect.yMax - size;
-		m_ProgressColor = Color.Lerp(Color.red, Color.green, 1.0f - progress);
+		m_ProgressColor = Color.Lerp(Color.red, Color.green, progress);
 	}
 
 	// Private functions ---------------------------------------
@@ -362,7 +362,8 @@ public class HeadController : MonoBehaviour {
 	}
 
 	void OnGUI() {
-		GUIUtils.DrawRect(m_ProgressRect, m_ProgressColor);
+		if (m_State == HeadState.Chewing || m_State == HeadState.Stationary)
+			GUIUtils.DrawRect(m_ProgressRect, m_ProgressColor);
 	}
 
 	// IEnumerators ----------------------------------
