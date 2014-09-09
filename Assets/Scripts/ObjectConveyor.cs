@@ -21,7 +21,7 @@ public class ObjectConveyor {
 	}
 
 	public void Restart() {
-		m_MinSpeed = -2.0f;
+		m_MinSpeed = -4.0f;
 		m_NeedToScroll = false;
 		m_ScrollingSlowingCoef = 1.0f;
 		DestroyFallingObjects();
