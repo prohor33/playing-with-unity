@@ -3,6 +3,14 @@ using System.Collections;
 
 public class Utils {
 
+	// TODO: make it ok somehow
+	public class Axis {
+		public static int X = 0;
+		public static int Y = 1;
+		public static int Z = 2;
+	};
+//	public enum Axis { X = 0, Y, Z };
+
 	public static int menu_level = 0;
 	public static int king_level = 1;
 	public static int dungeon_level = 2;

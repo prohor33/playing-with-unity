@@ -28,6 +28,10 @@ public class DungeonSceneController : MonoBehaviour {
 		HandleInputs();
 	}
 
+	void FixedUpdate() {
+		UpdateCamera();
+	}
+
 	void LoadLevelsDoors() {
 
 		Vector3 start_pos = new Vector3(0.0f, 6.15f, 0.0f);
@@ -122,6 +126,12 @@ public class DungeonSceneController : MonoBehaviour {
 		Touch touch = Input.GetTouch(0);
 		Vector2 pos = touch.position;
 		m_Hero.SetTarget(Camera.main.ScreenToWorldPoint(pos));
+	}
+
+	void UpdateCamera() {
+		Vector3 cam_p = Camera.main.transform.position;
+		cam_p.y = m_Hero.transform.position.y;
+		Camera.main.transform.position = cam_p;
 	}
 
 	void OnGUI () {

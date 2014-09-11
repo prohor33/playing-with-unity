@@ -68,9 +68,9 @@ public class MonsterController : MonoBehaviour {
 		}
 
 		// Update heads progresess
-		float max_up_p = 1.5f;
-		float left_head_progress = 1.0f - (left_head_p - (m_LeftHeadContr.GetMinPos() + delta_min)) / max_up_p;
-		float right_head_progress = 1.0f - (right_head_p - (m_RightHeadContr.GetMinPos() + delta_min)) / max_up_p;
+		float max_delta_y = 1.5f;
+		float left_head_progress = 1.0f - (left_head_p - (m_LeftHeadContr.GetMinPos() + delta_min)) / max_delta_y;
+		float right_head_progress = 1.0f - (right_head_p - (m_RightHeadContr.GetMinPos() + delta_min)) / max_delta_y;
 		m_LeftHeadContr.UpdateKillProgress(left_head_progress);
 		m_RightHeadContr.UpdateKillProgress(right_head_progress);
 	}

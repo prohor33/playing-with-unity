@@ -12,7 +12,6 @@ public class Hero : MonoBehaviour {
 	public static float m_CurrT = -1.0f;
 
 	float m_TargetT;
-	bool m_NeedToStopCurrTarget;
 
 	enum HeroState { Stationary = 0, Moving };
 	HeroState m_State;
@@ -27,7 +26,6 @@ public class Hero : MonoBehaviour {
 			m_CurrT = 0.0f;
 		m_TargetT = -1.0f; // there is no target
 		m_State = HeroState.Stationary;
-		m_NeedToStopCurrTarget = false;
 		m_Direction = Direction.Stationary;
 		m_OldDirection = Direction.Stationary;
 		m_LevelsSceneController = levels_scene_controller;
@@ -51,6 +49,9 @@ public class Hero : MonoBehaviour {
 				min_t = t;
 			}
 		}
+
+		if (min_t == m_CurrT)
+			return;
 
 		if (min_t < 0.0f) {
 			Debug.LogError("SetTarget() error");
@@ -98,8 +99,6 @@ public class Hero : MonoBehaviour {
 	}
 
 	void GoToPoint(float t) {
-		if (m_State == HeroState.Moving)
-			m_NeedToStopCurrTarget = true;
 		m_TargetT = t;
 	}
 
@@ -149,11 +148,14 @@ public class Hero : MonoBehaviour {
 	}
 
 	void CheckForTargets() {
-		if (m_NeedToStopCurrTarget)
-			return;	// do not start new task until previous is not shuted down
 //		const float hero_speed = 0.05f;
 		const float hero_speed = 0.5f;	// for debug!
 		if (m_TargetT >= 0.0f) {
+			// Stop previous
+			StopCoroutine("MoveHero");
+			m_State = HeroState.Stationary;
+			m_Direction = Direction.Stationary;
+
 			MoveByRoute(m_TargetT, hero_speed);
 			m_TargetT = -1.0f;
 		}
@@ -166,9 +168,12 @@ public class Hero : MonoBehaviour {
 			if (an_st_info.IsName(m_OldDirection.ToString())) {	// if previous direction already set up
 				new_dir = m_Direction;
 				m_OldDirection = m_Direction;
+			} else {
+				Debug.LogWarning("This shouldn't happens too much");
 			}
 		}
 		m_Animator.SetInteger("m_Direction", (int)new_dir);
+		print("m_Direction2 = " + m_Direction);
     }
 
 	void ChooseCurrentDirection(bool move_forvard) {
@@ -179,6 +184,7 @@ public class Hero : MonoBehaviour {
 			m_Direction = (move_forvard != (curr_sections_index % 4 == 0)) ? Direction.Right : Direction.Left;
 		else
 			m_Direction = move_forvard ? Direction.Down : Direction.Up;
+		print("m_Direction = " + m_Direction);
 	}
 
 	void MoveByRoute(float target_t, float speed) {
@@ -210,14 +216,8 @@ public class Hero : MonoBehaviour {
 
 	IEnumerator MoveHero(Transform trans, float start_t, float end_t, bool move_forvard, float time) {
 		float t = 0.0f;
-		float rate = 1.0f/time;
+		float rate = 1.0f / time;
 		while (t < 1.0f) {
-			if (m_NeedToStopCurrTarget) {
-				m_NeedToStopCurrTarget = false;
-				m_State = HeroState.Stationary;
-				m_Direction = Direction.Stationary;
-				yield break;
-			}
 			t += Time.deltaTime * rate;
 			m_CurrT = Mathf.Lerp(start_t, end_t, t);
 			trans.position = GetPosFromTrajectory(m_CurrT);
