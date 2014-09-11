@@ -68,7 +68,7 @@ public class GameContr : MonoBehaviour {
 	}
 
 	void ResetTempData() {
-		m_LevelPlaying = -1;
+		m_LevelPlaying = 0;
 	}
 }
 

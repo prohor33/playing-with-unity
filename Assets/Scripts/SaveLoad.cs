@@ -78,6 +78,10 @@ public class SaveLoad {
 		} else {
 			GameContr.control.m_LevelsCleared = (GameContr.LevelState[])bf.Deserialize(file);
 			Debug.Log("Load " + GameContr.control.m_LevelsCleared.Length + " levels");
+
+			if (GameContr.control.m_LevelsCleared.Length == 0) {
+				Debug.LogError("No levels are loaded!");
+			}
 		}
 	}
 
