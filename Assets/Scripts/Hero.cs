@@ -30,6 +30,7 @@ public class Hero : MonoBehaviour {
 		m_OldDirection = Direction.Stationary;
 		m_LevelsSceneController = levels_scene_controller;
 		gameObject.transform.localPosition = GetPosFromTrajectory(m_CurrT);
+		gameObject.transform.localScale = new Vector3(scale, scale, scale);
 		m_AlreadyMoved = false;
 	}
 
@@ -71,7 +72,7 @@ public class Hero : MonoBehaviour {
 	}
 
 	void InitPath(float scale, Vector3 pos) {
-		Vector3 start_pos = new Vector3(4.2f, 22.96f, 0.0f);
+		Vector3 start_pos = new Vector3(4.2f, 22.8f, 0.0f);
 		Vector3 delta_y_pos = new Vector3(0.0f, 4.20f, 0.0f);
 		Vector3 delta_x_pos = new Vector3(8.5f, 0.0f, 0.0f);
 
@@ -148,8 +149,8 @@ public class Hero : MonoBehaviour {
 	}
 
 	void CheckForTargets() {
-//		const float hero_speed = 0.05f;
-		const float hero_speed = 0.5f;	// for debug!
+		const float hero_speed = 0.05f;
+//		const float hero_speed = 0.5f;	// for debug!
 		if (m_TargetT >= 0.0f) {
 			// Stop previous
 			StopCoroutine("MoveHero");
@@ -197,7 +198,7 @@ public class Hero : MonoBehaviour {
 	}
 
 	void CheckForLevelPassingBy() {
-		return;	// for debug!
+//		return;	// for debug!
 		if (!m_LevelsSceneController)
 			return;
 		if (m_State != HeroState.Stationary || !m_AlreadyMoved)

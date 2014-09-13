@@ -9,7 +9,10 @@ public class DungeonSceneController : MonoBehaviour {
 
 	// private members -------------------------------------
 
+	const bool m_IsDaknessEnable = true;
+
 	GameObject m_DungeonBack;
+	GameObject m_Darkness;
 	Hero m_Hero;
 	Vector3[] m_LevelDoorsPos;
 
@@ -22,6 +25,7 @@ public class DungeonSceneController : MonoBehaviour {
 		LoadDungeonBackground();
 		LoadLevelsDoors();
 		InitHero();
+		LoadDarkness();
 	}
 	
 	void Update () {
@@ -30,6 +34,7 @@ public class DungeonSceneController : MonoBehaviour {
 
 	void FixedUpdate() {
 		UpdateCamera();
+		UpdateDarkness();
 	}
 
 	void LoadLevelsDoors() {
@@ -97,9 +102,19 @@ public class DungeonSceneController : MonoBehaviour {
 
 	void LoadDungeonBackground() {
 		string game_obj_name = "Dungeon";
-//		Utils.LoadBackground(game_obj_name, game_obj_name.ToLower(), new Vector2(242, 176), false);
 		Utils.LoadBackground(game_obj_name, game_obj_name.ToLower(), new Vector2(242, 0), true);
 		m_DungeonBack = GameObject.Find(game_obj_name);
+	}
+
+	void LoadDarkness() {
+		GameObject go = GameObject.Find("Darkness");
+		if (!m_IsDaknessEnable) {
+			Destroy(go);
+			return;
+		}
+		go.transform.position = Camera.main.transform.position;
+		go.transform.localScale = m_Hero.transform.localScale;
+		m_Darkness = go;
 	}
 
 	void InitHero() {
@@ -133,6 +148,12 @@ public class DungeonSceneController : MonoBehaviour {
 		Vector3 cam_p = Camera.main.transform.position;
 		cam_p.y = m_Hero.transform.position.y;
 		Camera.main.transform.position = cam_p;
+	}
+
+	void UpdateDarkness() {
+		if (!m_IsDaknessEnable)
+			return;
+		m_Darkness.transform.position = m_Hero.transform.position;
 	}
 
 	void OnGUI () {
