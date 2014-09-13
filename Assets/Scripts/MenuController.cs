@@ -10,7 +10,10 @@ public class MenuController : MonoBehaviour {
 		Rect btn_pos = new Rect(Screen.width / 2 - btn_size.x / 2,
 		                        Screen.height / 2 - (btn_size.y + (btn_number - 1) * btn_vert_shift) / 2 , btn_size.x, btn_size.y);
 
-		if(GUI.Button(btn_pos, "Play")) {
+		GUIStyle disable_style = new GUIStyle();
+//		disable_style.
+		// TODO: make is not active when no game to continue
+		if(GUI.Button(btn_pos, "Continue")) {
 			if (StatisticKeeper.m_AlreadySawKingScene)
 				Application.LoadLevel(Utils.dungeon_level);
 			else
@@ -19,14 +22,15 @@ public class MenuController : MonoBehaviour {
 
 		RectOffset btn_shift = new RectOffset(0, 0, -btn_vert_shift, btn_vert_shift);
 		btn_pos = btn_shift.Add(btn_pos);
-		if(GUI.Button(btn_pos, "About")) {
-//			Application.LoadLevel(2);
+		if(GUI.Button(btn_pos, "New Game")) {
+			SaveLoad.ResetAllData();
+			Debug.Log("The data have been reset");
+			Application.LoadLevel(Utils.king_level);
 		}
 
 		btn_pos = btn_shift.Add(btn_pos);
-		if(GUI.Button(btn_pos, "Reset All The Data")) {
-			SaveLoad.ResetAllData();
-			Debug.Log("The data have been reset");
+		if(GUI.Button(btn_pos, "About")) {
+			//			Application.LoadLevel(2);
 		}
 
 		btn_pos = btn_shift.Add(btn_pos);
