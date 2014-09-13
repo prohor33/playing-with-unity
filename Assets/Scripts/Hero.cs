@@ -139,7 +139,7 @@ public class Hero : MonoBehaviour {
 		int section_index = (int)(t / section_t);
 
 		float dt = t - section_index * section_t;
-		dt *= sections_n;
+		dt *= sections_n;	// normalize to (0, 1)
 		
 		if (dt < 0.0f)
 			Debug.LogError("GetSectionT()");
@@ -149,12 +149,10 @@ public class Hero : MonoBehaviour {
 
 	void CheckForTargets() {
 //		const float hero_speed = 0.05f;
-		const float hero_speed = 0.5f;	// for debug!
+		const float hero_speed = 0.1f;	// for debug!
 		if (m_TargetT >= 0.0f) {
 			// Stop previous
 			StopCoroutine("MoveHero");
-			m_State = HeroState.Stationary;
-			m_Direction = Direction.Stationary;
 
 			MoveByRoute(m_TargetT, hero_speed);
 			m_TargetT = -1.0f;
@@ -169,11 +167,11 @@ public class Hero : MonoBehaviour {
 				new_dir = m_Direction;
 				m_OldDirection = m_Direction;
 			} else {
-				Debug.LogWarning("This shouldn't happens too much");
+				// set up previous then
+				new_dir = m_OldDirection;
 			}
 		}
 		m_Animator.SetInteger("m_Direction", (int)new_dir);
-		print("m_Direction2 = " + m_Direction);
     }
 
 	void ChooseCurrentDirection(bool move_forvard) {
@@ -184,7 +182,6 @@ public class Hero : MonoBehaviour {
 			m_Direction = (move_forvard != (curr_sections_index % 4 == 0)) ? Direction.Right : Direction.Left;
 		else
 			m_Direction = move_forvard ? Direction.Down : Direction.Up;
-		print("m_Direction = " + m_Direction);
 	}
 
 	void MoveByRoute(float target_t, float speed) {
@@ -192,10 +189,15 @@ public class Hero : MonoBehaviour {
 
 		bool move_forvard = target_t > m_CurrT;
 		float time = Mathf.Abs(target_t - m_CurrT) / speed;
-		StartCoroutine(MoveHero(gameObject.transform, m_CurrT, target_t, move_forvard, time));
+
+		float delay_to_stop_prev_coroutine = 0.02f;
+		StartCoroutine(MoveHeroWithDelay(gameObject.transform, m_CurrT /* fix */,
+		                                 target_t, move_forvard, time,
+		                                 delay_to_stop_prev_coroutine));
 	}
 
 	void CheckForLevelPassingBy() {
+		return; // for debug!
 		if (!m_LevelsSceneController)
 			return;
 		if (m_State != HeroState.Stationary || !m_AlreadyMoved)
@@ -213,6 +215,14 @@ public class Hero : MonoBehaviour {
 	}
 	
 	// IEnumerators ----------------------------------
+
+	IEnumerator MoveHeroWithDelay(Transform trans, float start_t, float end_t,
+	                     bool move_forvard, float time, float delay) {
+		yield return new WaitForSeconds(delay);
+		if (IsInvoking("MoveHero"))
+			StopCoroutine("MoveHero");
+		StartCoroutine(MoveHero(trans, m_CurrT, end_t, move_forvard, time));
+	}
 
 	IEnumerator MoveHero(Transform trans, float start_t, float end_t, bool move_forvard, float time) {
 		float t = 0.0f;
