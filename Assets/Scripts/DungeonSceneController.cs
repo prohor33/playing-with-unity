@@ -9,7 +9,7 @@ public class DungeonSceneController : MonoBehaviour {
 
 	// private members -------------------------------------
 
-	GameObject m_Dungeon;
+	GameObject m_DungeonBack;
 	Hero m_Hero;
 	Vector3[] m_LevelDoorsPos;
 
@@ -34,11 +34,11 @@ public class DungeonSceneController : MonoBehaviour {
 
 	void LoadLevelsDoors() {
 
-		Vector3 start_pos = new Vector3(0.0f, 6.15f, 0.0f);
-		Vector3 delta_y_pos = new Vector3(0.0f, -4.18f, 0.0f);
-		float dungeon_scale = m_Dungeon.transform.localScale.x;
+		Vector3 start_pos = new Vector3(0.0f, 22.86f, 0.0f);
+		Vector3 delta_y_pos = new Vector3(0.0f, -4.2f, 0.0f);
+		float dungeon_scale = m_DungeonBack.transform.localScale.x;
 		start_pos *= dungeon_scale;
-		start_pos += m_Dungeon.transform.position;
+		start_pos += m_DungeonBack.transform.position;
 		delta_y_pos *= dungeon_scale;
 
 		int doors_on_the_floor = 1;
@@ -97,8 +97,9 @@ public class DungeonSceneController : MonoBehaviour {
 
 	void LoadDungeonBackground() {
 		string game_obj_name = "Dungeon";
-		Utils.LoadBackground(game_obj_name, game_obj_name.ToLower(), new Vector2(242, 176), false);
-		m_Dungeon = GameObject.Find(game_obj_name);
+//		Utils.LoadBackground(game_obj_name, game_obj_name.ToLower(), new Vector2(242, 176), false);
+		Utils.LoadBackground(game_obj_name, game_obj_name.ToLower(), new Vector2(242, 0), true);
+		m_DungeonBack = GameObject.Find(game_obj_name);
 	}
 
 	void InitHero() {
@@ -107,7 +108,7 @@ public class DungeonSceneController : MonoBehaviour {
 			Debug.LogError("Cant' find hero");
 		}
 		m_Hero = (Hero)go.GetComponent(typeof(Hero));
-		m_Hero.Init(m_Dungeon.transform.localScale.x, m_Dungeon.transform.position, this);
+		m_Hero.Init(m_DungeonBack.transform.localScale.x, m_DungeonBack.transform.position, this);
 	}
 
 	void HandleInputs() {

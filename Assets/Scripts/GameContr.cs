@@ -38,7 +38,7 @@ public class GameContr : MonoBehaviour {
 
 	// private members --------------------------------------
 
-	const int m_LevelsNumber = 4;
+	const int m_LevelsNumber = 4 * 3;
 
 	void Awake() {
 		if (control == null) {
